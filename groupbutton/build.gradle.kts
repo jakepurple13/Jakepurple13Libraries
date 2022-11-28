@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.programmersbox.patterninput"
+    namespace = "com.programmersbox.groupbutton"
     compileSdk = 33
 
     defaultConfig {
@@ -49,7 +49,7 @@ publishing {
         register<MavenPublication>("release") {
             // You can then customize attributes of the publication as shown below.
             groupId = "com.github.jakepurple13"
-            artifactId = "patterninput"
+            artifactId = "groupbutton"
             version = "1.0.0"
             afterEvaluate { from(components["release"]) }
         }

@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 rootProject.name = "Jakepurple13Libraries"
 include(":app")
 include(":patterninput")
+include(":groupbutton")
