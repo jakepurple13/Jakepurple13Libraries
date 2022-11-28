@@ -19,8 +19,8 @@ fun <T> GroupButton(
     modifier: Modifier = Modifier,
     selected: T,
     options: List<GroupButtonModel<T>>,
-    selectedColor: Color = MaterialTheme.colorScheme.inversePrimary,
-    unselectedColor: Color = MaterialTheme.colorScheme.surface,
+    selectedContainer: Color = MaterialTheme.colorScheme.inversePrimary,
+    unselectedContainer: Color = MaterialTheme.colorScheme.surface,
     onClick: (T) -> Unit
 ) {
     Row(modifier) {
@@ -38,7 +38,7 @@ fun <T> GroupButton(
                     bottomEnd = if (i == options.size - 1) smallShape.bottomEnd else noCorner
                 ),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = animateColorAsState(if (selected == option.item) selectedColor else unselectedColor).value
+                    containerColor = animateColorAsState(if (selected == option.item) selectedContainer else unselectedContainer).value
                 )
             ) { option.iconContent() }
         }
