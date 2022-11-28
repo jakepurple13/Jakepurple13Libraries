@@ -46,7 +46,7 @@ publishing {
         register<MavenPublication>("release") {
             // You can then customize attributes of the publication as shown below.
             groupId = "com.github.jakepurple13"
-            artifactId = "patterninput"
+            artifactId = "diamondloader"
             version = AppInfo.ARTIFACT_VERSION
             afterEvaluate { from(components["release"]) }
         }
