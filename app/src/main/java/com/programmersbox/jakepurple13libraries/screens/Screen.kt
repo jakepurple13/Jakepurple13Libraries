@@ -5,7 +5,8 @@ import androidx.navigation.NavController
 enum class Screen {
     Main,
     PatternInput,
-    GroupButton
+    GroupButton,
+    DiamondLoader
 }
 
 fun NavController.navigate(screen: Screen) = navigate(screen.name)

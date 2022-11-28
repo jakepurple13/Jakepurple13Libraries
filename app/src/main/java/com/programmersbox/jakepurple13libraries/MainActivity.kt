@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.programmersbox.jakepurple13libraries.screens.DiamondLoaderScreen
 import com.programmersbox.jakepurple13libraries.screens.GroupButtonScreen
 import com.programmersbox.jakepurple13libraries.screens.Screen
 import com.programmersbox.jakepurple13libraries.screens.navigate
@@ -40,9 +41,10 @@ fun AppUi() {
     NavHost(navController = navController, startDestination = Screen.Main.name) {
         composable(Screen.PatternInput.name) { PatternScreen() }
         composable(Screen.GroupButton.name) { GroupButtonScreen() }
+        composable(Screen.DiamondLoader.name) { DiamondLoaderScreen() }
         composable(Screen.Main.name) {
             ScaffoldTop(screen = Screen.Main, showBackButton = false) {
-                LazyVerticalGrid(columns = GridCells.Fixed(3), contentPadding = it) {
+                LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = it) {
                     items(Screen.values().dropWhile { it == Screen.Main }) {
                         OutlinedButton(onClick = { navController.navigate(it) }) { Text(it.name) }
                     }

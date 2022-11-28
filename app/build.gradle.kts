@@ -53,9 +53,11 @@ dependencies {
     implementation(libs.androidCore)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation(libs.bundles.compose)
-    val purpleLibVersion = "d89158de3e"
+    val purpleLibVersion = "0a1c0a0c78"
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
+//    implementation(projects.diamondloader)
     implementation(libs.navCompose)
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4")
