@@ -53,7 +53,7 @@ dependencies {
     implementation(libs.androidCore)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation(libs.bundles.compose)
-    val purpleLibVersion = "0a1c0a0c78"
+    val purpleLibVersion = "1.0.0"
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
