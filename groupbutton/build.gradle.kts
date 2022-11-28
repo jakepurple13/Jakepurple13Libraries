@@ -50,14 +50,14 @@ publishing {
             // You can then customize attributes of the publication as shown below.
             groupId = "com.github.jakepurple13"
             artifactId = "groupbutton"
-            version = "1.0.0"
+            version = AppInfo.ARTIFACT_VERSION
             afterEvaluate { from(components["release"]) }
         }
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation(libs.androidCore)
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
