@@ -1,7 +1,11 @@
 package com.programmersbox.modifierutils
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * Registers a broadcast receiver and unregisters at the end of the composable lifecycle
@@ -11,7 +15,6 @@ import androidx.compose.runtime.*
  * @see IntentFilter
  * @param tick the callback from the broadcast receiver
  */
-/*
 @Composable
 fun <T : Any> broadcastReceiver(
     defaultValue: T,
@@ -33,7 +36,6 @@ fun <T : Any> broadcastReceiver(
     return item
 }
 
-*/
 /**
  * Registers a broadcast receiver and unregisters at the end of the composable lifecycle
  *
@@ -41,8 +43,7 @@ fun <T : Any> broadcastReceiver(
  * @param intentFilter the filter for intents.
  * @see IntentFilter
  * @param tick the callback from the broadcast receiver
- *//*
-
+ */
 @Composable
 fun <T : Any> broadcastReceiverNullable(
     defaultValue: T?,
@@ -63,4 +64,3 @@ fun <T : Any> broadcastReceiverNullable(
     }
     return item
 }
-*/

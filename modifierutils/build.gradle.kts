@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    //id("maven-publish")
 }
 
 android {
@@ -34,14 +34,14 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
+//    publishing {
+//        singleVariant("release") {
+//            withSourcesJar()
+//        }
+//    }
 }
 
-publishing {
+/*publishing {
     publications {
         // Creates a Maven publication called "release".
         register<MavenPublication>("release") {
@@ -52,7 +52,7 @@ publishing {
             afterEvaluate { from(components["release"]) }
         }
     }
-}
+}*/
 
 dependencies {
     implementation(libs.androidCore)
