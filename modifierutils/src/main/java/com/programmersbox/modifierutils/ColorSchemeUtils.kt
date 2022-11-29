@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 fun Color.animate() = animateColorAsState(this)
 
 @Composable
-fun ColorScheme.animateToNewScheme() = copy(
+fun ColorScheme.animate() = copy(
     primary = primary.animate().value,
     onPrimary = onPrimary.animate().value,
     primaryContainer = primaryContainer.animate().value,
