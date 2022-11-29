@@ -6,9 +6,6 @@ plugins {
 
 android {
     namespace = "com.programmersbox.groupbutton"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 configurePublishing("groupbutton")

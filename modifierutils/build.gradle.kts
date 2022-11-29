@@ -6,9 +6,6 @@ plugins {
 
 android {
     namespace = "com.programmersbox.modifierutils"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 configurePublishing("modifierutils")

@@ -15,17 +15,12 @@ android {
             useSupportLibrary = true
         }
     }
-    packagingOptions {
-        resources {
-            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
-        }
-    }
 }
 
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     val purpleLibVersion = "1.0.0"
-    //val purpleLibVersion = "1a941628f0"
+    //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
@@ -33,7 +28,4 @@ dependencies {
     //implementation(projects.diamondloader)
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
-    //androidTestImplementation("androidx.compose.ui:ui-test-junit4:${libs.versions.compose}")
-    //debugImplementation("androidx.compose.ui:ui-tooling:${libs.versions.compose}")
-    //debugImplementation("androidx.compose.ui:ui-test-manifest:${libs.versions.compose}")
 }

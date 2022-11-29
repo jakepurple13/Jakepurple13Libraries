@@ -6,9 +6,6 @@ plugins {
 
 android {
     namespace = "com.programmersbox.patterninput"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 configurePublishing("patterninput")
