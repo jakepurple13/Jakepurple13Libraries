@@ -28,6 +28,7 @@ dependencies {
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
 //    implementation(projects.diamondloader)
     implementation(libs.navCompose)
     //androidTestImplementation("androidx.compose.ui:ui-test-junit4:${libs.versions.compose}")

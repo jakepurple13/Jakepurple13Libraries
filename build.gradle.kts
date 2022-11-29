@@ -36,11 +36,9 @@ fun Project.configureKotlinCompile() {
 fun Project.configureAndroidBasePlugin() {
     extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
         compileSdkVersion(33)
-
         defaultConfig {
             minSdk = 23
             targetSdk = 33
-
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
@@ -57,7 +55,6 @@ fun Project.configureAndroidBasePlugin() {
                 excludes += "/META-INF/{AL2.0,LGPL2.1}:"
             }
         }
-
         buildTypes {
             getByName("release") {
                 isMinifyEnabled = false
@@ -67,6 +64,8 @@ fun Project.configureAndroidBasePlugin() {
                 )
             }
         }
+
+        if (plugins.findPlugin(MavenPublishPlugin::class) != null) setupPublishing()
 
         buildFeatures.compose = true
         dependencies {
@@ -81,6 +80,13 @@ fun Project.configureAndroidBasePlugin() {
     }
 }
 
-fun Project.configurePublishing() {
-
-}
+fun Project.setupPublishing(): Unit = (this as ExtensionAware).extensions.configure(
+    "android",
+    Action<com.android.build.api.dsl.LibraryExtension> {
+        publishing {
+            singleVariant("release") {
+                withSourcesJar()
+            }
+        }
+    }
+)
