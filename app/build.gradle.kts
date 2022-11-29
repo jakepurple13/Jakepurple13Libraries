@@ -19,7 +19,7 @@ android {
 
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    val purpleLibVersion = "f80e4438bc"//"1.0.2"
+    val purpleLibVersion = "1.0.2"//"1.0.2"
     //implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
