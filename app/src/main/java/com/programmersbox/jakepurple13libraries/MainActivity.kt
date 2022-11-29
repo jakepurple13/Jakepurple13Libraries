@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.programmersbox.jakepurple13libraries.screens.DiamondLoaderScreen
-import com.programmersbox.jakepurple13libraries.screens.GroupButtonScreen
-import com.programmersbox.jakepurple13libraries.screens.Screen
-import com.programmersbox.jakepurple13libraries.screens.navigate
+import com.programmersbox.jakepurple13libraries.screens.*
 import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
 import com.programmersbox.jakepurple13libraries.ui.theme.LocalNavController
 
@@ -42,6 +39,7 @@ fun AppUi() {
         composable(Screen.PatternInput.name) { PatternScreen() }
         composable(Screen.GroupButton.name) { GroupButtonScreen() }
         composable(Screen.DiamondLoader.name) { DiamondLoaderScreen() }
+        composable(Screen.Poker.name) { Poker() }
         composable(Screen.Main.name) {
             ScaffoldTop(screen = Screen.Main, showBackButton = false) {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = it) {

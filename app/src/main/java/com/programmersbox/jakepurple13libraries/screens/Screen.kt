@@ -6,7 +6,8 @@ enum class Screen {
     Main,
     PatternInput,
     GroupButton,
-    DiamondLoader
+    DiamondLoader,
+    Poker
 }
 
 fun NavController.navigate(screen: Screen) = navigate(screen.name)

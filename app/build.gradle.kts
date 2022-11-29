@@ -26,6 +26,7 @@ dependencies {
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
     //implementation(projects.diamondloader)
+    implementation(projects.cards)
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
 }
