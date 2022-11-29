@@ -17,9 +17,9 @@ dependencies {
 
 publishing {
 
-    repositories {
+    /*repositories {
         maven(url = "~/.gradle/caches/modules-2/files-2.1")
-    }
+    }*/
 
     publications {
         // Create a maven publication called "release"
