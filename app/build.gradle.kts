@@ -32,6 +32,7 @@ dependencies {
     implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
     //implementation(projects.diamondloader)
     implementation(libs.navCompose)
+    implementation(libs.bundles.composeAll)
     //androidTestImplementation("androidx.compose.ui:ui-test-junit4:${libs.versions.compose}")
     //debugImplementation("androidx.compose.ui:ui-tooling:${libs.versions.compose}")
     //debugImplementation("androidx.compose.ui:ui-test-manifest:${libs.versions.compose}")

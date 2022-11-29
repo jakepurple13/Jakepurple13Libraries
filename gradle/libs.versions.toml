@@ -53,11 +53,14 @@ compose = [
     "composeMaterialIconsCore", "composeMaterialIconsExtended",
     "composeAnimation",
     "composeActivity",
+    "materialYou",
+]
+
+composeAll = [
     "composeMaterialThemeAdapter", "composeMaterial3ThemeAdapter",
     "landscapistGlide", "landscapistPalette", "landscapistPlaceholder",
     "coilCompose",
     "composeConstraintLayout",
     "materialPlaceholder", "drawablePainter",
-    "materialYou",
     "systemUiController", "flowLayout"
 ]
