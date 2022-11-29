@@ -35,4 +35,5 @@ dependencies {
     //implementation(projects.navigationcomposeutils)
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
+    implementation("io.github.oleksandrbalan:pagecurl:1.1.0")
 }
