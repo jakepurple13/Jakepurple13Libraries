@@ -20,20 +20,20 @@ android {
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     val purpleLibVersion = "f80e4438bc"//"1.0.2"
-    implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
+    //implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
-    /*implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:cards:$purpleLibVersion")
-    implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils:$purpleLibVersion")*/
-    implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils:$purpleLibVersion")
+    /*implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:cards")
-    implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils")*/
     //implementation(projects.diamondloader)
     //implementation(projects.cards)
     //implementation(projects.modifierutils)
