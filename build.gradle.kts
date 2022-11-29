@@ -20,8 +20,10 @@ buildscript {
 
 subprojects {
     afterEvaluate {
-        configureKotlinCompile()
-        configureAndroidBasePlugin()
+        if (project.name != "bom") {
+            configureKotlinCompile()
+            configureAndroidBasePlugin()
+        }
     }
 }
 
