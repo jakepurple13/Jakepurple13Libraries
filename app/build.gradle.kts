@@ -19,14 +19,18 @@ android {
 
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    val purpleLibVersion = "1.0.0"
+    val purpleLibVersion = "1.0.1"
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
     implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
     implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
+    implementation("com.github.jakepurple13.Jakepurple13Libraries:cards:$purpleLibVersion")
     //implementation(projects.diamondloader)
-    implementation(projects.cards)
+    //implementation(projects.cards)
+    //implementation(projects.modifierutils)
+    //implementation(projects.patterninput)
+    //implementation(projects.groupbutton)
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
 }
