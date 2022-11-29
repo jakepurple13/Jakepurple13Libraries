@@ -4,14 +4,11 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.programmersbox.navigationcomposeutils.ProvideNavController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -35,7 +32,6 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
-val LocalNavController = staticCompositionLocalOf<NavHostController> { error("No NavController Found!") }
 
 @Composable
 fun Jakepurple13LibrariesTheme(
@@ -58,9 +54,7 @@ fun Jakepurple13LibrariesTheme(
         SideEffect { uiController.setStatusBarColor(colorScheme.primary) }
     }
 
-    CompositionLocalProvider(
-        LocalNavController provides rememberNavController()
-    ) {
+    ProvideNavController {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,

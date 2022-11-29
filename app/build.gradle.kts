@@ -31,6 +31,7 @@ dependencies {
     //implementation(projects.modifierutils)
     //implementation(projects.patterninput)
     //implementation(projects.groupbutton)
+    implementation(projects.navigationcomposeutils)
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
 }

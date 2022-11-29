@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.programmersbox.jakepurple13libraries.screens.*
 import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
-import com.programmersbox.jakepurple13libraries.ui.theme.LocalNavController
+import com.programmersbox.navigationcomposeutils.LocalNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

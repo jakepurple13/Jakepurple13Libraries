@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.programmersbox.jakepurple13libraries.screens.Screen
-import com.programmersbox.jakepurple13libraries.ui.theme.LocalNavController
+import com.programmersbox.navigationcomposeutils.LocalNavController
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
