@@ -11,12 +11,22 @@ javaPlatform {
 
 dependencies {
     constraints {
-        api(projects.groupbutton)
+        project.rootProject.subprojects
+            .filter { it != projects.app }
+            .forEach { subproject -> api("com.github.jakepurple13.Jakepurple13Libraries:${subproject.name}:${AppInfo.ARTIFACT_VERSION}") }
+        /*api(projects.groupbutton)
         api(projects.navigationcomposeutils)
         api(projects.diamondloader)
         api(projects.patterninput)
         api(projects.modifierutils)
-        api(projects.cards)
+        api(projects.cards)*/
+        /*val purpleLibVersion = "1.0.3"
+        api("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
+        api("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
+        api("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
+        api("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
+        api("com.github.jakepurple13.Jakepurple13Libraries:cards:$purpleLibVersion")
+        api("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils:$purpleLibVersion")*/
     }
 }
 
