@@ -1,7 +1,7 @@
 plugins {
     //kotlin("jvm")
-    id("java-platform")
-    id("maven-publish")
+    `java-platform`
+    `maven-publish`
     //`kotlin-dsl`
 }
 
@@ -51,7 +51,7 @@ publishing {
             groupId = "com.github.jakepurple13"
             artifactId = "libraries-bom"
             version = AppInfo.ARTIFACT_VERSION
-            afterEvaluate { from(components["javaPlatform"]) }
+            from(components["javaPlatform"])
         }
     }
 }
