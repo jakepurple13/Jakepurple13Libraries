@@ -53,7 +53,7 @@ publishing {
 
     publications {
         // Create a maven publication called "release"
-        register<MavenPublication>("maven") {
+        register<MavenPublication>("release") {
             groupId = "com.github.jakepurple13"
             artifactId = "libraries-bom"
             version = AppInfo.ARTIFACT_VERSION
