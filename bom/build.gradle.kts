@@ -2,7 +2,6 @@ plugins {
     //kotlin("jvm")
     id("java-platform")
     id("maven-publish")
-    id("io.github.gradlebom.generator-plugin") version "1.0.0.Final"
     //`kotlin-dsl`
 }
 
@@ -39,11 +38,6 @@ artifacts {
     archives androidSourcesJar
             archives javadocJar
 }*/
-
-bomGenerator {
-    excludeProject(projects.app.name)
-    excludeProject(projects.bom.name)
-}
 
 publishing {
 
