@@ -5,16 +5,18 @@ plugins {
     //`kotlin-dsl`
 }
 
+javaPlatform {
+    allowDependencies()
+}
+
 dependencies {
     constraints {
-        project.rootProject.subprojects.forEach { subproject ->
-            api(projects.groupbutton)
-            api(projects.navigationcomposeutils)
-            api(projects.diamondloader)
-            api(projects.patterninput)
-            api(projects.modifierutils)
-            api(projects.cards)
-        }
+        api(projects.groupbutton)
+        api(projects.navigationcomposeutils)
+        api(projects.diamondloader)
+        api(projects.patterninput)
+        api(projects.modifierutils)
+        api(projects.cards)
     }
 }
 
