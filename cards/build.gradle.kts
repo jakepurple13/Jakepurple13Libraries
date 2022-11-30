@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.cards"
 }
 
-configurePublishing("cards")
-
 dependencies {
     implementation(libs.flowLayout)
 }

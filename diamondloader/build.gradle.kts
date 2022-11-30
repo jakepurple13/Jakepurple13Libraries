@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.diamondloader"
 }
 
-configurePublishing("diamondloader")
-
 dependencies {
 
 }

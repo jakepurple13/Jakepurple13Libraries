@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.groupbutton"
 }
 
-configurePublishing("groupbutton")
-
 dependencies {
 
 }

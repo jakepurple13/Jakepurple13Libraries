@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.modifierutils"
 }
 
-configurePublishing("modifierutils")
-
 dependencies {
 
 }

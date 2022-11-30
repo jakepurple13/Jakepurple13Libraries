@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.patterninput"
 }
 
-configurePublishing("patterninput")
-
 dependencies {
 
 }

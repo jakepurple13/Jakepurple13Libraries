@@ -68,7 +68,10 @@ fun Project.configureAndroidBasePlugin() {
             }
         }
 
-        if (plugins.findPlugin(MavenPublishPlugin::class) != null) setupPublishing()
+        if (plugins.findPlugin(MavenPublishPlugin::class) != null) {
+            setupPublishing()
+            configurePublishing(this@configureAndroidBasePlugin.name)
+        }
 
         buildFeatures.compose = true
         dependencies {

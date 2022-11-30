@@ -8,8 +8,6 @@ android {
     namespace = "com.programmersbox.navigationcomposeutils"
 }
 
-configurePublishing("navigationcomposeutils")
-
 dependencies {
     implementation(libs.navCompose)
 }
