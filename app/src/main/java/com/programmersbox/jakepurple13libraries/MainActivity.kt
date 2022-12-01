@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import com.programmersbox.jakepurple13libraries.screens.*
+import com.programmersbox.jakepurple13libraries.screens.Screen
+import com.programmersbox.jakepurple13libraries.screens.composable
+import com.programmersbox.jakepurple13libraries.screens.navigate
 import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
 import com.programmersbox.navigationcomposeutils.LocalNavController
 import eu.wewox.pagecurl.ExperimentalPageCurlApi
@@ -36,28 +38,33 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppUi() {
     val navController = LocalNavController.current
     NavHost(navController = navController, startDestination = Screen.Main.name) {
-        composable(Screen.PatternInput) { PatternScreen() }
-        composable(Screen.GroupButton) { GroupButtonScreen() }
-        composable(Screen.DiamondLoader) { DiamondLoaderScreen() }
-        composable(Screen.Poker) { Poker() }
-        composable(Screen.PageCurl) { PageCurlScreen() }
-        composable(Screen.Main) {
-            ScaffoldTop(screen = Screen.Main, showBackButton = false) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = it
-                ) {
-                    items(Screen.values().dropWhile { s -> s == Screen.Main }) {
-                        OutlinedButton(onClick = { navController.navigate(it) }) { Text(it.name) }
-                    }
-                }
+        composable(Screen.PatternInput)
+        composable(Screen.GroupButton)
+        composable(Screen.DiamondLoader)
+        composable(Screen.Poker)
+        composable(Screen.Yahtzee)
+        composable(Screen.PageCurl)
+        composable(Screen.Main)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen() {
+    val navController = LocalNavController.current
+    ScaffoldTop(screen = Screen.Main, showBackButton = false) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            contentPadding = it
+        ) {
+            items(Screen.values().dropWhile { s -> s == Screen.Main }) {
+                OutlinedButton(onClick = { navController.navigate(it) }) { Text(it.name) }
             }
         }
     }
