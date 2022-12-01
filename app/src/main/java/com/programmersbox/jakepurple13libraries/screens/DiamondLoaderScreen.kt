@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.programmersbox.diamondloader.*
 import com.programmersbox.jakepurple13libraries.ScaffoldTop
-import com.programmersbox.jakepurple13libraries.nextColor
+import com.programmersbox.randomutils.nextColor
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,8 +33,8 @@ fun DiamondLoaderScreen() {
         ) {
             var diamond by remember { mutableStateOf(Random.nextFloat()) }
 
-            var primaryColor by remember { mutableStateOf(Random.nextColor(a = 255)) }
-            var backgroundColor by remember { mutableStateOf(Random.nextColor(a = 255)) }
+            var primaryColor by remember { mutableStateOf(Random.nextColor(alpha = 255)) }
+            var backgroundColor by remember { mutableStateOf(Random.nextColor(alpha = 255)) }
 
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -43,8 +43,8 @@ fun DiamondLoaderScreen() {
                 Button(onClick = { diamond = Random.nextFloat() }) { Text("Random Progress") }
                 Button(
                     onClick = {
-                        primaryColor = Random.nextColor(a = 255)
-                        backgroundColor = Random.nextColor(a = 255)
+                        primaryColor = Random.nextColor(alpha = 255)
+                        backgroundColor = Random.nextColor(alpha = 255)
                     }
                 ) { Text("Random Colors") }
             }

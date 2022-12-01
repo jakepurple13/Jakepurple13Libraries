@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.programmersbox.jakepurple13libraries.screens.Screen
 import com.programmersbox.navigationcomposeutils.LocalNavController
-import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,10 +46,3 @@ fun ScaffoldTop(
         content = block
     )
 }
-
-fun Random.nextColor(
-    a: Int = nextInt(0, 255),
-    red: Int = nextInt(0, 255),
-    green: Int = nextInt(0, 255),
-    blue: Int = nextInt(0, 255)
-) = Color(red, green, blue, a)

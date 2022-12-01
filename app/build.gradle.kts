@@ -29,6 +29,7 @@ dependencies {
             implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:cards:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils:$purpleLibVersion")
+            implementation("com.github.jakepurple13.Jakepurple13Libraries:randomutils:$purpleLibVersion")
         }
         LibLocation.Bom -> {
             val purpleLibVersion = "1ebfe90d2e"
@@ -39,6 +40,7 @@ dependencies {
             implementation("com.github.jakepurple13.Jakepurple13Libraries:modifierutils")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:cards")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils")
+            implementation("com.github.jakepurple13.Jakepurple13Libraries:randomutils")
         }
         LibLocation.Project -> {
             implementation(projects.diamondloader)
@@ -47,6 +49,7 @@ dependencies {
             implementation(projects.patterninput)
             implementation(projects.groupbutton)
             implementation(projects.navigationcomposeutils)
+            implementation(projects.randomutils)
         }
     }
 

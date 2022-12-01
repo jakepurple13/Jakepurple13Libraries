@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.register
 
 object AppInfo {
     val ARTIFACT_VERSION = "1.0.4"
-    val location = LibLocation.Individual
+    val location = LibLocation.Project
 }
 
 enum class LibLocation { Individual, Bom, Project }
