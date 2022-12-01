@@ -174,6 +174,13 @@ class Dice(value: Int = Random.nextInt(1..6), @Suppress("unused") val location: 
             randomCount = rollCount
         )
     }
+
+    @Composable
+    operator fun invoke(
+        useDots: Boolean,
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit = {}
+    ) = if (useDots) DiceDots(this, modifier, onClick) else Dice(this, modifier, onClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -258,27 +265,18 @@ fun YahtzeeScreen(vm: YahtzeeViewModel = viewModel()) {
 @Composable
 fun BottomBarDiceRow(vm: YahtzeeViewModel, diceLooks: Boolean) {
     BottomAppBar {
-        vm.hand.forEach {
-            val customModifier = Modifier
-                .padding(horizontal = 4.dp)
-                .weight(1f)
-                .border(
-                    width = animateDpAsState(targetValue = if (it in vm.hold) 4.dp else 0.dp).value,
-                    color = animateColorAsState(targetValue = if (it in vm.hold) Emerald else Color.Transparent).value,
-                    shape = RoundedCornerShape(7.dp)
-                )
-
-            if (diceLooks) {
-                DiceDots(
-                    it,
-                    modifier = customModifier
-                ) { if (it in vm.hold) vm.hold.remove(it) else vm.hold.add(it) }
-            } else {
-                Dice(
-                    it,
-                    modifier = customModifier
-                ) { if (it in vm.hold) vm.hold.remove(it) else vm.hold.add(it) }
-            }
+        vm.hand.forEach { dice ->
+            dice(
+                useDots = diceLooks,
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .weight(1f)
+                    .border(
+                        width = animateDpAsState(targetValue = if (dice in vm.hold) 4.dp else 0.dp).value,
+                        color = animateColorAsState(targetValue = if (dice in vm.hold) Emerald else Color.Transparent).value,
+                        shape = RoundedCornerShape(7.dp)
+                    )
+            ) { if (dice in vm.hold) vm.hold.remove(dice) else vm.hold.add(dice) }
         }
 
         IconButton(
@@ -466,8 +464,8 @@ fun ScoreButton(
         onClick = onClick,
         enabled = enabled,
         border = BorderStroke(
-            ButtonDefaults.outlinedButtonBorder.width,
-            animateColorAsState(
+            width = ButtonDefaults.outlinedButtonBorder.width,
+            color = animateColorAsState(
                 if (canScore && enabled) customBorderColor
                 else MaterialTheme.colorScheme.primary
             ).value
@@ -477,7 +475,7 @@ fun ScoreButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Dice(dice: Dice, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun Dice(dice: Dice, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(7.dp),
