@@ -31,5 +31,11 @@ class ExampleUnitTest {
 
         println(w)
         println(words)
+
+        val wordYellow = "yellow"
+        val anagramYellow = "lowly"
+        val failedAnagramYellow = "lay"
+        assert(wordYellow hasAnagram anagramYellow)
+        assert(!(failedAnagramYellow isAnagramOf wordYellow))
     }
 }
