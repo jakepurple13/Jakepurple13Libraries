@@ -25,7 +25,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.programmersbox.jakepurple13libraries.ScaffoldTop
 import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
 import com.programmersbox.navigationcomposeutils.LocalNavController
-import kotlinx.coroutines.*
+import com.programmersbox.randomutils.randomNumberAnimation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 import kotlin.random.Random
@@ -164,12 +168,11 @@ class Dice(value: Int = Random.nextInt(1..6), @Suppress("unused") val location: 
     var value by mutableStateOf(value)
 
     suspend fun roll(rollCount: Int = 5) {
-        val newValue = Random.nextInt(1..6)
-        repeat(rollCount) {
-            delay(50L)
-            value = Random.nextInt(1..6)
-        }
-        value = newValue
+        randomNumberAnimation(
+            newValue = Random.nextInt(1..6),
+            valueChange = { value = it },
+            randomCount = rollCount
+        )
     }
 }
 
