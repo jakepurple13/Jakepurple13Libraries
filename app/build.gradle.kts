@@ -31,7 +31,7 @@ dependencies {
             implementation("com.github.jakepurple13.Jakepurple13Libraries:navigationcomposeutils:$purpleLibVersion")
         }
         LibLocation.Bom -> {
-            val purpleLibVersion = "1ebfe90d2e"
+            val purpleLibVersion = "1.0.4"
             implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton")
