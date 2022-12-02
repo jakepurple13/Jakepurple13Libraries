@@ -8,10 +8,7 @@ import org.gradle.kotlin.dsl.register
 
 object AppInfo {
     val ARTIFACT_VERSION = "1.0.5"
-    val location = LibLocation.Project
 }
-
-enum class LibLocation { Individual, Bom, Project }
 
 fun Project.configurePublishing(libraryArtifactId: String): Unit = (this as ExtensionAware).extensions.configure(
     "publishing",

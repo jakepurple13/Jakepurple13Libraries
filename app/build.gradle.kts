@@ -17,12 +17,14 @@ android {
     }
 }
 
+enum class LibLocation { Individual, Bom, Project }
+
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
-    when (AppInfo.location) {
+    when (LibLocation.Individual) {
         LibLocation.Individual -> {
-            val purpleLibVersion = "1.0.4"
+            val purpleLibVersion = "1.0.5"
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
@@ -32,7 +34,7 @@ dependencies {
             implementation("com.github.jakepurple13.Jakepurple13Libraries:randomutils:$purpleLibVersion")
         }
         LibLocation.Bom -> {
-            val purpleLibVersion = "1ebfe90d2e"
+            val purpleLibVersion = "1.0.5"
             implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton")
