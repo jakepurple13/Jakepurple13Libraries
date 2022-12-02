@@ -58,4 +58,5 @@ dependencies {
     implementation(libs.navCompose)
     implementation(libs.bundles.composeAll)
     implementation("io.github.oleksandrbalan:pagecurl:1.1.0")
+    testImplementation("com.jakewharton.picnic:picnic:0.6.0")
 }
