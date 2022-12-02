@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -563,30 +565,20 @@ fun DiceDots(dice: Dice, modifier: Modifier = Modifier, onClick: () -> Unit = {}
                 }
             }
             6 -> {
-                Row(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(DOT_LOOK, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                val fontSize = LocalTextStyle.current.fontSize
+                val fontColor = LocalContentColor.current
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    val spaceBetweenWidthDots = size.width / 3
+                    val spaceBetweenHeightDots = size.height / 4
+                    repeat(6) {
+                        drawCircle(
+                            color = fontColor,
+                            radius = fontSize.toPx() / 4,
+                            center = Offset(
+                                spaceBetweenWidthDots * (it % 2 + 1),
+                                spaceBetweenHeightDots * ((it % 3) + 1)
+                            )
+                        )
                     }
                 }
             }
