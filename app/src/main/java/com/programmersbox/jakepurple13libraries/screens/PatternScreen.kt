@@ -38,6 +38,7 @@ fun PatternScreen() {
                 ),
                 sensitivity = 100f,
                 dotsSize = 50.sp.value,
+                dotCircleSize = 50f * 1.5f,
                 linesStroke = 50f,
                 circleStroke = Stroke(width = 4.dp.value),
                 animationDuration = 200,

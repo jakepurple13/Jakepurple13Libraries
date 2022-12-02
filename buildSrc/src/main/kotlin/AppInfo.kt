@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.register
 
 object AppInfo {
-    val ARTIFACT_VERSION = "1.0.4"
+    val ARTIFACT_VERSION = "1.0.5"
     val location = LibLocation.Project
 }
 
