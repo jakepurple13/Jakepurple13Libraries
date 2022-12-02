@@ -576,7 +576,7 @@ fun DiceDots(dice: Dice, modifier: Modifier = Modifier, onClick: () -> Unit = {}
                             radius = fontSize.toPx() / 4,
                             center = Offset(
                                 spaceBetweenWidthDots * (it % 2 + 1),
-                                spaceBetweenHeightDots * ((it % 3) + 1)
+                                spaceBetweenHeightDots * (it % 3 + 1)
                             )
                         )
                     }
