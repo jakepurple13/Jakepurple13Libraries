@@ -1,4 +1,4 @@
-package com.programmersbox.jakepurple13libraries
+package com.programmersbox.jakepurple13libraries.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.programmersbox.jakepurple13libraries.screens.Screen
+import com.programmersbox.jakepurple13libraries.ScaffoldTop
 import com.programmersbox.patterninput.PatternInput
 import com.programmersbox.patterninput.PatternInputDefaults
 
@@ -38,7 +38,7 @@ fun PatternScreen() {
                 ),
                 sensitivity = 100f,
                 dotsSize = 50.sp.value,
-                dotCircleSize = 50f * 1.5f,
+                dotCircleSize = 50.sp.value * 1.5f,
                 linesStroke = 50f,
                 circleStroke = Stroke(width = 4.dp.value),
                 animationDuration = 200,

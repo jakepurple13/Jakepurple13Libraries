@@ -5,7 +5,6 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.programmersbox.jakepurple13libraries.MainScreen
 import com.programmersbox.jakepurple13libraries.PageCurlScreen
-import com.programmersbox.jakepurple13libraries.PatternScreen
 
 enum class Screen(val content: @Composable (NavBackStackEntry) -> Unit) {
     Main({ MainScreen() }),
