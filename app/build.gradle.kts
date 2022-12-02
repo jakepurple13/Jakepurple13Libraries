@@ -22,7 +22,7 @@ enum class LibLocation { Individual, Bom, Project }
 dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
-    when (LibLocation.Individual) {
+    when (LibLocation.Project) {
         LibLocation.Individual -> {
             val purpleLibVersion = "1.0.5"
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")

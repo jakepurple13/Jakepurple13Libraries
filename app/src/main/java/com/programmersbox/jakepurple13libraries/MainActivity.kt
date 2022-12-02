@@ -42,13 +42,7 @@ class MainActivity : ComponentActivity() {
 fun AppUi() {
     val navController = LocalNavController.current
     NavHost(navController = navController, startDestination = Screen.Main.name) {
-        composable(Screen.PatternInput)
-        composable(Screen.GroupButton)
-        composable(Screen.DiamondLoader)
-        composable(Screen.Poker)
-        composable(Screen.Yahtzee)
-        composable(Screen.PageCurl)
-        composable(Screen.Main)
+        Screen.values().forEach { composable(it) }
     }
 }
 
