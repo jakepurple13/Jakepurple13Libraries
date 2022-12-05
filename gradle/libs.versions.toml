@@ -11,6 +11,7 @@ androidGradle = "7.3.1"
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
+publish = { id = "com.gradle.plugin-publish", version = "1.0.0" }
 
 [libraries]
 androidGradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradle" }

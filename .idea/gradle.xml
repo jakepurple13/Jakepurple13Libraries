@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/projectinfoplugin" name="projectinfoplugin">
+                <projects>
+                  <project path="$PROJECT_DIR$/projectinfoplugin" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -19,6 +30,7 @@
             <option value="$PROJECT_DIR$/modifierutils" />
             <option value="$PROJECT_DIR$/navigationcomposeutils" />
             <option value="$PROJECT_DIR$/patterninput" />
+            <option value="$PROJECT_DIR$/projectinfoplugin" />
             <option value="$PROJECT_DIR$/randomutils" />
           </set>
         </option>
