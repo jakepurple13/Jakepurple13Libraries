@@ -38,13 +38,13 @@ abstract class ProjectInfoTask : DefaultTask() {
     @get:Optional
     @get:Input
     abstract val excludeDirectories: ListProperty<String>
-
 }
 
 enum class SortInfoBy { LineCount, FileCount, FileType, TotalLines }
 
 class ProjectInfoPlugin : Plugin<Project> {
     override fun apply(target: Project) {
+        val projectDir = target.projectDir
         val extension = target.extensions.create("projectInfo", ProjectInfoExtension::class.java)
         val task = target.tasks.register("projectInfo", ProjectInfoTask::class.java)
         target.afterEvaluate {
@@ -56,7 +56,7 @@ class ProjectInfoPlugin : Plugin<Project> {
             }
             val taskInfo = task.get()
             librariesInfo(
-                projectDir = target.projectDir.absolutePath,
+                projectDir = projectDir.absolutePath,
                 useGit = taskInfo.useGit.get(),
                 sortInfoBy = taskInfo.sortBy.get(),
                 excludeFiles = taskInfo.excludeFiles.get(),
@@ -72,10 +72,10 @@ class ProjectInfoPlugin : Plugin<Project> {
         excludeFiles: List<String>,
         excludeDirectories: List<String>
     ) {
-        val files =
-            if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") } else getAllFilesNotGit(projectDir)
+        val files = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
+        else getAllFilesNotGit(projectDir)
         val allFiles = files
-            .filter { it.absolutePath !in excludeFiles && it.parentFile?.absolutePath !in excludeDirectories }
+            .filter { file -> file.absolutePath !in excludeFiles && file.parentFile?.absolutePath !in excludeDirectories }
             .groupBy { it.extension }
             .toList()
             .let { list ->
