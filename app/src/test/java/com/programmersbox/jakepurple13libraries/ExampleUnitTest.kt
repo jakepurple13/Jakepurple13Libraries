@@ -19,7 +19,7 @@ class ExampleUnitTest {
         val file = File(System.getProperty("user.dir")!!).parentFile!!
         println(file.absolutePath)
         val f = getAllFiles().map { File("${file.absolutePath}/$it") }
-        val allFiles = f.groupBy { it.extension }
+        val allFiles = f.groupBy(File::extension)
         table {
             cellStyle {
                 border = true

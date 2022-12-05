@@ -42,6 +42,8 @@ abstract class ProjectInfoTask : DefaultTask() {
 
 enum class SortInfoBy { LineCount, FileCount, FileType, TotalLines }
 
+private data class FileInfo(val size: Int, val absolutePath: String, val name: String)
+
 class ProjectInfoPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val projectDir = target.projectDir
@@ -76,14 +78,15 @@ class ProjectInfoPlugin : Plugin<Project> {
         else getAllFilesNotGit(projectDir)
         val allFiles = files
             .filter { file -> file.absolutePath !in excludeFiles && file.parentFile?.absolutePath !in excludeDirectories }
-            .groupBy { it.extension }
+            .groupBy(File::extension) { FileInfo(it.readLines().size, it.absolutePath, it.name) }
             .toList()
             .let { list ->
                 when (sortInfoBy) {
-                    SortInfoBy.LineCount -> list.sortedByDescending { it.second.maxOf { it.readLines().size } }
+                    //Set all this data into a data class so reading all happens only once
+                    SortInfoBy.LineCount -> list.sortedByDescending { it.second.maxOf { it.size } }
                     SortInfoBy.FileCount -> list.sortedByDescending { it.second.size }
                     SortInfoBy.FileType -> list.sortedBy { it.first }
-                    SortInfoBy.TotalLines -> list.sortedByDescending { it.second.sumOf { it.readLines().size } }
+                    SortInfoBy.TotalLines -> list.sortedByDescending { it.second.sumOf { it.size } }
                 }
             }
             .toMap()
@@ -101,10 +104,10 @@ class ProjectInfoPlugin : Plugin<Project> {
             allFiles.forEach { (t, u) ->
                 row {
                     cell(t)
-                    val largest = u.maxByOrNull { it.readLines().size }
+                    val largest = u.maxByOrNull { it.size }
                     cell(u.size)
-                    cell(u.sumOf { it.readLines().size })
-                    cell(largest?.readLines()?.size)
+                    cell(u.sumOf { it.size })
+                    cell(largest?.size)
                     cell(largest?.name)
                     cell(largest?.absolutePath)
                 }
@@ -113,8 +116,8 @@ class ProjectInfoPlugin : Plugin<Project> {
             row {
                 cell("Total")
                 cell(allFiles.values.sumOf { it.size })
-                cell(allFiles.values.sumOf { it.sumOf { it.readLines().size } })
-                cell(allFiles.values.sumOf { it.maxOf { it.readLines().size } })
+                cell(allFiles.values.sumOf { it.sumOf { it.size } })
+                cell(allFiles.values.sumOf { it.maxOf { it.size } })
             }
         }
             .also(::println)
@@ -130,7 +133,6 @@ class ProjectInfoPlugin : Plugin<Project> {
     }
 
     private fun getAllFilesNotGit(projectDir: String): List<File> {
-        println(projectDir)
         return Files.find(File(projectDir).toPath(), 999, { _, i -> i.isRegularFile })
             .map { it.toAbsolutePath().toFile() }
             .toList()
