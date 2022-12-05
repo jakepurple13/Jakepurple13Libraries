@@ -86,6 +86,13 @@ class ProjectInfoPlugin : Plugin<Project> {
                     cell(largest?.absolutePath)
                 }
             }
+
+            row {
+                cell("Total")
+                cell(allFiles.values.sumOf { it.size })
+                cell(allFiles.values.sumOf { it.sumOf { it.readLines().size } })
+                cell(allFiles.values.sumOf { it.maxOf { it.readLines().size } })
+            }
         }
             .also(::println)
     }
