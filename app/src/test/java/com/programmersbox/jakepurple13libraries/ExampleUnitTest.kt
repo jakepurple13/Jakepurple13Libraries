@@ -40,6 +40,7 @@ class ExampleUnitTest {
                     cell(largest?.readLines()?.size)
                     cell(largest?.name)
                     cell(largest?.absolutePath)
+                    cell(u.joinToString("\n") { it.toRelativeString(file) })
                 }
             }
 

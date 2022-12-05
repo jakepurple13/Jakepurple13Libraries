@@ -18,6 +18,10 @@ android {
     }
 }
 
+projectInfo {
+
+}
+
 enum class LibLocation { Individual, Bom, Project }
 
 dependencies {

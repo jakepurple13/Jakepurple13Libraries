@@ -4,6 +4,7 @@ import com.jakewharton.picnic.table
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -16,6 +17,8 @@ import kotlin.streams.toList
 abstract class ProjectInfoExtension {
     var useGit: Boolean = true
     var sortInfoBy: SortInfoBy = SortInfoBy.LineCount
+    val excludeFiles = mutableListOf<String>()
+    val excludeDirectories = mutableListOf<String>()
 }
 
 abstract class ProjectInfoTask : DefaultTask() {
@@ -27,6 +30,14 @@ abstract class ProjectInfoTask : DefaultTask() {
     @get:Optional
     @get:Input
     abstract val sortBy: Property<SortInfoBy>
+
+    @get:Optional
+    @get:Input
+    abstract val excludeFiles: ListProperty<String>
+
+    @get:Optional
+    @get:Input
+    abstract val excludeDirectories: ListProperty<String>
 
 }
 
@@ -40,20 +51,32 @@ class ProjectInfoPlugin : Plugin<Project> {
             task.configure { target ->
                 target.useGit.set(extension.useGit)
                 target.sortBy.set(extension.sortInfoBy)
+                target.excludeFiles.set(extension.excludeFiles)
+                target.excludeDirectories.set(extension.excludeDirectories)
             }
             val taskInfo = task.get()
             librariesInfo(
                 projectDir = target.projectDir.absolutePath,
                 useGit = taskInfo.useGit.get(),
-                sortInfoBy = taskInfo.sortBy.get()
+                sortInfoBy = taskInfo.sortBy.get(),
+                excludeFiles = taskInfo.excludeFiles.get(),
+                excludeDirectories = taskInfo.excludeDirectories.get()
             )
         }
     }
 
-    private fun librariesInfo(projectDir: String, useGit: Boolean, sortInfoBy: SortInfoBy) {
-        val f = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
-        else getAllFilesNotGit(projectDir)
-        val allFiles = f.groupBy { it.extension }
+    private fun librariesInfo(
+        projectDir: String,
+        useGit: Boolean,
+        sortInfoBy: SortInfoBy,
+        excludeFiles: List<String>,
+        excludeDirectories: List<String>
+    ) {
+        val files =
+            if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") } else getAllFilesNotGit(projectDir)
+        val allFiles = files
+            .filter { it.absolutePath !in excludeFiles && it.parentFile?.absolutePath !in excludeDirectories }
+            .groupBy { it.extension }
             .toList()
             .let { list ->
                 when (sortInfoBy) {
