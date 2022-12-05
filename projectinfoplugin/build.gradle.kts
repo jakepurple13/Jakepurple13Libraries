@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     alias(libs.plugins.publish)
+    id("maven-publish")
 }
 
 sourceSets.configureEach {
@@ -8,7 +9,7 @@ sourceSets.configureEach {
 }
 
 group = "io.github.jakepurple13.ProjectInfo"
-version = "0.1.0"
+version = "1.0.5"
 
 java {
     withSourcesJar()
@@ -17,11 +18,25 @@ java {
 
 dependencies {
     implementation("com.jakewharton.picnic:picnic:0.6.0")
+    implementation(gradleApi())
+    implementation(kotlin("stdlib"))
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("mavenJava") {
+            // You can then customize attributes of the publication as shown below.
+            groupId = "com.github.jakepurple13"
+            artifactId = "projectInfo"
+            version = "1.0.5"
+            //afterEvaluate { artifact(java.sourceSets.main.get().allSource) }
+        }
+    }
 }
 
 gradlePlugin {
     plugins {
-        create("plugin") {
+        create("projectInfoPlugin") {
             id = group.toString()
             displayName = "Project Info"
             description = "Allows you to view and see project info"
