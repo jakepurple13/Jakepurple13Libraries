@@ -126,3 +126,57 @@ GroupButton(
 
 Group button is generic so things can be typed!
 </details>
+
+# ProjectInfo Plugin
+
+<details>
+    <summary>Documentation</summary>
+
+This is to view some information about the project like number of files of a type, line count, total
+lines, and showing the file with the most number of lines!
+
+<p align="center">
+    <img src="images/projectinfo.png" />
+</p>
+
+<details>
+    <summary>Gradle</summary>
+
+```gradle
+plugin {
+    id 'io.github.jakepurple13.ProjectInfo' version <version> apply false 
+}
+```
+
+</details>
+
+<details>
+    <summary>KTS</summary>
+
+```kotlin
+plugin {
+    id("io.github.jakepurple13.ProjectInfo") version < version > apply false
+}
+```
+
+</details>
+
+Some modifiable things:
+
+```kotlin
+projectInfo {
+    //useGit to decide whether or use to use `git ls-files` or not.
+    //If you set this to false, this will look through ALL files including build files
+    useGit = false //default is true
+    //Types are LineCount, FileCount, FileType, TotalLines
+    sortInfoBy = SortInfoBy.LineCount //default is SortInfoBy.LineCount
+    //add files you want to exclude
+    excludeFiles
+    //add directories you want to exclude (this may not completely work yet)
+    excludeDirectories
+    //add file types you want to exclude
+    excludeFileTypes
+}
+```
+
+</details>
