@@ -144,7 +144,7 @@ lines, and showing the file with the most number of lines!
 
 ```gradle
 plugin {
-    id 'io.github.jakepurple13.ProjectInfo' version <version> apply false 
+    id 'io.github.jakepurple13.ProjectInfo' version [version] apply false 
 }
 ```
 
@@ -155,7 +155,7 @@ plugin {
 
 ```kotlin
 plugin {
-    id("io.github.jakepurple13.ProjectInfo") version < version > apply false
+    id("io.github.jakepurple13.ProjectInfo") version [version] apply false
 }
 ```
 
