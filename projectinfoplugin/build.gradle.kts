@@ -8,8 +8,10 @@ sourceSets.configureEach {
     java.srcDirs("src/$name/kotlin")
 }
 
+val versionInfo = "1.0.6"
+
 group = "io.github.jakepurple13.ProjectInfo"
-version = "1.0.5"
+version = versionInfo
 
 java {
     withSourcesJar()
@@ -28,8 +30,7 @@ publishing {
             // You can then customize attributes of the publication as shown below.
             groupId = "com.github.jakepurple13"
             artifactId = "projectInfo"
-            version = "1.0.5"
-            //afterEvaluate { artifact(java.sourceSets.main.get().allSource) }
+            version = versionInfo
         }
     }
 }
