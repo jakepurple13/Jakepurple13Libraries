@@ -165,17 +165,14 @@ Some modifiable things:
 
 ```kotlin
 projectInfo {
-    //useGit to decide whether or use to use `git ls-files` or not.
-    //If you set this to false, this will look through ALL files including build files
-    useGit = false //default is true
-    //Types are LineCount, FileCount, FileType, TotalLines
-    sortInfoBy = SortInfoBy.LineCount //default is SortInfoBy.LineCount
-    //add files you want to exclude
-    excludeFiles
-    //add directories you want to exclude (this may not completely work yet)
-    excludeDirectories
+    //Set a custom sortWith using Comparator!
+    sortWith = compareByDescending { it.second.maxOf { it.size } }
     //add file types you want to exclude
     excludeFileTypes
+    //to filter further:
+    filter {
+        //Then use normal excludes/includes here!
+    }
 }
 ```
 

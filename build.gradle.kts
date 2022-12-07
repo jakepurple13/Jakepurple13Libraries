@@ -3,6 +3,15 @@ plugins {
     id("com.android.application") version libs.versions.androidGradle.get() apply false
     id("com.android.library") version libs.versions.androidGradle.get() apply false
     kotlin("android") version libs.versions.kotlin.get() apply false
+    id("io.github.jakepurple13.ProjectInfo") version "1.0.7"
+}
+
+projectInfo {
+    filter {
+        exclude("**/*.png", "**/*.webp", "**renovate.json")
+    }
+
+    sortWith = compareByDescending { it.second.maxOf { it.size } }
 }
 
 buildscript {

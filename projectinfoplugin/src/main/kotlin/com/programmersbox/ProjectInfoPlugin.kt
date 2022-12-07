@@ -4,6 +4,7 @@ import com.jakewharton.picnic.table
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -12,47 +13,35 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.nio.file.Files
+import javax.inject.Inject
 import kotlin.streams.toList
 
-abstract class ProjectInfoExtension {
-    //@Inject constructor(private val filterable: ConfigurableFileTree): ConfigurableFileTree by filterable {
-    var useGit: Boolean = true
-    var sortInfoBy: SortInfoBy = SortInfoBy.LineCount
-    val excludeFiles = mutableListOf<String>()
-    val excludeDirectories = mutableListOf<String>()
+abstract class ProjectInfoExtension @Inject constructor(private val filterable: ConfigurableFileTree) {
+    var sortWith: Comparator<Pair<String, List<FileInfo>>> =
+        compareByDescending<Pair<String, List<FileInfo>>> { p -> p.second.maxOf { it.size } }
     val excludeFileTypes = mutableListOf<String>()
+    internal val filtering: ConfigurableFileTree = filterable
+    fun filter(block: ConfigurableFileTree.() -> Unit) {
+        filterable.apply(block)
+    }
 }
 
 abstract class ProjectInfoTask : DefaultTask() {
 
     @get:Optional
     @get:Input
-    abstract val useGit: Property<Boolean>
-
-    @get:Optional
-    @get:Input
-    abstract val sortBy: Property<SortInfoBy>
-
-    @get:Optional
-    @get:Input
-    abstract val excludeFiles: ListProperty<String>
-
-    @get:Optional
-    @get:Input
-    abstract val excludeDirectories: ListProperty<String>
+    abstract val sortWith: Property<Comparator<Pair<String, List<FileInfo>>>>
 
     @get:Optional
     @get:Input
     abstract val excludeFileTypes: ListProperty<String>
 
-    /*@get:Optional
+    @get:Optional
     @get:Input
-    abstract val filter: Property<ConfigurableFileTree>*/
+    abstract val filter: Property<ConfigurableFileTree>
 }
 
-enum class SortInfoBy { LineCount, FileCount, FileType, TotalLines }
-
-private data class FileInfo(val size: Int, val absolutePath: String, val name: String)
+data class FileInfo(val size: Int, val absolutePath: String, val name: String)
 
 class ProjectInfoPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -60,58 +49,45 @@ class ProjectInfoPlugin : Plugin<Project> {
         val extension = target.extensions.create(
             "projectInfo",
             ProjectInfoExtension::class.java,
-            //target.fileTree(projectDir)
+            target.fileTree(projectDir) {
+                it.exclude("**/build/**")
+                it.exclude("**/.gradle/**")
+                it.exclude("**/gradle/wrapper/**")
+                it.exclude("**/.**")
+                it.exclude("**.iml")
+                it.exclude("**/local.properties")
+                it.exclude("**/.idea**")
+                it.exclude("**.cxx")
+            }
         )
         val task = target.tasks.register("projectInfo", ProjectInfoTask::class.java)
         target.afterEvaluate {
             task.configure { target ->
-                target.useGit.set(extension.useGit)
-                target.sortBy.set(extension.sortInfoBy)
-                target.excludeFiles.set(extension.excludeFiles)
-                target.excludeDirectories.set(extension.excludeDirectories)
                 target.excludeFileTypes.set(extension.excludeFileTypes)
-                //target.filter.set(extension)
+                target.sortWith.set(extension.sortWith)
+                target.filter.set(extension.filtering)
             }
             val taskInfo = task.get()
             librariesInfo(
-                projectDir = projectDir.absolutePath,
-                useGit = taskInfo.useGit.get(),
-                sortInfoBy = taskInfo.sortBy.get(),
-                excludeFiles = taskInfo.excludeFiles.get(),
-                excludeDirectories = taskInfo.excludeDirectories.get(),
+                fileList = taskInfo.filter.get(),
+                sortWith = taskInfo.sortWith.get(),
                 excludeFileTypes = taskInfo.excludeFileTypes.get(),
-                //filter = taskInfo.filter.get()
             )
         }
     }
 
     private fun librariesInfo(
-        projectDir: String,
-        useGit: Boolean,
-        sortInfoBy: SortInfoBy,
-        excludeFiles: List<String>,
-        excludeDirectories: List<String>,
+        fileList: ConfigurableFileTree,
+        sortWith: Comparator<Pair<String, List<FileInfo>>>,
         excludeFileTypes: List<String>,
-        //filter: ConfigurableFileTree
     ) {
-        val files = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
-        else getAllFilesNotGit(projectDir)
-        val allFiles = files
-            .filter { file ->
-                file.absolutePath !in excludeFiles &&
-                        file.parentFile?.absolutePath !in excludeDirectories &&
-                        file.extension !in excludeFileTypes //&& filter.contains(file)
-            }
+        /*val files = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
+        else getAllFilesNotGit(projectDir)*/
+        val allFiles = fileList.files.toList()
+            .filter { file -> file.extension !in excludeFileTypes && file.extension.isNotEmpty() }
             .groupBy(File::extension) { FileInfo(it.readLines().size, it.absolutePath, it.name) }
             .toList()
-            .let { list ->
-                when (sortInfoBy) {
-                    SortInfoBy.LineCount -> list.sortedByDescending { it.second.maxOf { it.size } }
-                    SortInfoBy.FileCount -> list.sortedByDescending { it.second.size }
-                    SortInfoBy.TotalLines -> list.sortedByDescending { it.second.sumOf { it.size } }
-                    SortInfoBy.FileType -> list.sortedBy { it.first }
-                }
-            }
+            .sortedWith(sortWith)
             .toMap()
         table {
             cellStyle {

@@ -8,7 +8,7 @@ sourceSets.configureEach {
     java.srcDirs("src/$name/kotlin")
 }
 
-val versionInfo = "1.0.7"
+val versionInfo = "1.0.8"
 
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
@@ -16,6 +16,8 @@ version = versionInfo
 java {
     withSourcesJar()
     withJavadocJar()
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {

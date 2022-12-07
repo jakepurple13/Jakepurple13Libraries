@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("io.github.jakepurple13.ProjectInfo")
 }
 
 android {
@@ -16,10 +15,6 @@ android {
             useSupportLibrary = true
         }
     }
-}
-
-projectInfo {
-
 }
 
 enum class LibLocation { Individual, Bom, Project }
