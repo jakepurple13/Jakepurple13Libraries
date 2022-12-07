@@ -17,12 +17,27 @@ import javax.inject.Inject
 import kotlin.streams.toList
 
 abstract class ProjectInfoExtension @Inject constructor(private val filterable: ConfigurableFileTree) {
-    var sortWith: Comparator<Pair<String, List<FileInfo>>> =
-        compareByDescending<Pair<String, List<FileInfo>>> { p -> p.second.maxOf { it.size } }
+    var sortWith: Comparator<Pair<String, List<FileInfo>>> = compareByDescending { p -> p.second.maxOf { it.size } }
     val excludeFileTypes = mutableListOf<String>()
     internal val filtering: ConfigurableFileTree = filterable
     fun filter(block: ConfigurableFileTree.() -> Unit) {
         filterable.apply(block)
+    }
+
+    fun sortByMostLines() {
+        sortWith = compareByDescending { p -> p.second.maxOf { it.size } }
+    }
+
+    fun sortByFileType() {
+        sortWith = compareBy { it.first }
+    }
+
+    fun sortByTotalLines() {
+        sortWith = compareByDescending { it.second.sumOf { it.size } }
+    }
+
+    fun sortByFileCount() {
+        sortWith = compareByDescending { it.second.size }
     }
 }
 
