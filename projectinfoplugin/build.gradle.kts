@@ -8,7 +8,7 @@ sourceSets.configureEach {
     java.srcDirs("src/$name/kotlin")
 }
 
-val versionInfo = "1.0.6"
+val versionInfo = "1.0.7"
 
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo

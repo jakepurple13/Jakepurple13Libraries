@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.register
 
 object AppInfo {
-    val ARTIFACT_VERSION = "1.0.5"
+    val ARTIFACT_VERSION = "1.0.7"
 }
 
 fun Project.configurePublishing(libraryArtifactId: String): Unit = (this as ExtensionAware).extensions.configure(
