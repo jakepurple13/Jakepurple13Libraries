@@ -3,7 +3,7 @@ name: Gradle Push Workflow
 on:
   push:
     tags:
-      - 'v*'
+      - '*.*.*'
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
