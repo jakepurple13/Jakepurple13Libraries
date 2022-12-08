@@ -1,5 +1,6 @@
 package com.programmersbox.jakepurple13libraries.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -8,9 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.programmersbox.jakepurple13libraries.ScaffoldTop
+import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
 import com.programmersbox.patterninput.PatternInput
 import com.programmersbox.patterninput.PatternInputDefaults
 
@@ -52,5 +56,18 @@ fun PatternScreen() {
                 onResult = { /*Does a final thing*/ }
             )
         }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    wallpaper = Wallpapers.RED_DOMINATED_EXAMPLE,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    apiLevel = 33
+)
+@Composable
+fun PatternPreview() {
+    Jakepurple13LibrariesTheme {
+        PatternScreen()
     }
 }
