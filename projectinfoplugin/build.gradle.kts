@@ -8,7 +8,7 @@ sourceSets.configureEach {
     java.srcDirs("src/$name/kotlin")
 }
 
-val versionInfo = "1.0.9"
+val versionInfo = getVersionFromAppInfo() ?: "1.0.9".also { println("Could not find AppInfo") }
 
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
@@ -67,4 +67,12 @@ tasks.create("setupPluginUploadFromEnvironment") {
         System.setProperty("gradle.publish.key", key)
         System.setProperty("gradle.publish.secret", secret)
     }
+}
+
+fun getVersionFromAppInfo(): String? {
+    val regex = Regex("const val ARTIFACT_VERSION = \"(.*?)\"")
+    return File("${rootDir.parent}/buildSrc/src/main/kotlin/AppInfo.kt").readLines()
+        .firstOrNull { regex.containsMatchIn(it) }
+        ?.let { regex.find(it)?.groups?.get(1)?.value }
+        ?.also { println("Found AppInfo Version: $it") }
 }
