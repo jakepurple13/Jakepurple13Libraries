@@ -111,7 +111,7 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
     /**
      * Adds all cards from [otherDeck] to this deck
      */
-    infix fun addDeck(otherDeck: AbstractDeck<T>) = deckOfCards.addCards(*otherDeck.deck.toArray())
+    infix fun addDeck(otherDeck: AbstractDeck<T>) = deckOfCards.addCards(*otherDeck.deckOfCards.toArray())
 
     /**
      * Add [cards] to the deck
@@ -192,7 +192,8 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
      */
     @JvmOverloads
     @Throws(DeckException::class)
-    fun random(predicate: (T) -> Boolean = { true }) = deck.filter(predicate).tryCatch("Card Not Found") { it.random() }
+    fun random(predicate: (T) -> Boolean = { true }) =
+        deckOfCards.filter(predicate).tryCatch("Card Not Found") { it.random() }
 
     /**
      * Randomly draws a card
@@ -201,7 +202,7 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
     @JvmOverloads
     @Throws(DeckException::class)
     fun randomDraw(predicate: (T) -> Boolean = { true }) =
-        deck.filter(predicate).tryCatch("Card Not Found") { it.random().also { c -> remove(c) } }
+        deckOfCards.filter(predicate).tryCatch("Card Not Found") { it.random().also { c -> remove(c) } }
 
     /**
      * Adds the cards from [deck] to this deck
@@ -223,7 +224,7 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
      * @throws DeckException if the [index] is outside of the deck's bounds
      */
     @Throws(DeckException::class)
-    operator fun get(index: Int) = tryCatch("Index: $index, Size: $size") { deck[index] }
+    operator fun get(index: Int) = tryCatch("Index: $index, Size: $size") { deckOfCards[index] }
 
     /**
      * Gets a list from the deck between [range]
@@ -231,14 +232,15 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
      */
     @Throws(DeckException::class)
     operator fun get(range: IntRange) =
-        tryCatch("Index: ${range.first} to ${range.last}, Size: $size") { deck.slice(range) }
+        tryCatch("Index: ${range.first} to ${range.last}, Size: $size") { deckOfCards.slice(range) }
 
     /**
      * Gets a list from the deck between [from] and [to]
      * @throws DeckException if the range is outside the bounds of the deck
      */
     @Throws(DeckException::class)
-    operator fun get(from: Int, to: Int) = tryCatch("Index: $from to $to, Size: $size") { deck.subList(from, to) }
+    operator fun get(from: Int, to: Int) =
+        tryCatch("Index: $from to $to, Size: $size") { deckOfCards.subList(from, to) }
 
     /**
      * Gets cards from [cards]
@@ -287,17 +289,17 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
     /**
      * Returns an iterator over the elements of this object.
      */
-    operator fun iterator() = deck.iterator()
+    operator fun iterator() = deckOfCards.iterator()
 
     /**
      * checks if [card] is in this deck
      */
-    operator fun contains(card: T) = card in deck
+    operator fun contains(card: T) = card in deckOfCards
 
     /**
      * get the range from 0..[index]
      */
-    operator fun rangeTo(index: Int) = deck.subList(0, index)
+    operator fun rangeTo(index: Int) = deckOfCards.subList(0, index)
 
     /**
      * @see cutShuffle
@@ -345,5 +347,5 @@ abstract class AbstractDeck<T>(cards: Iterable<T> = emptyList()) {
 
     override fun hashCode(): Int = deckOfCards.hashCode()
 
-    override fun toString(): String = "${this::class.simpleName}(size=$size, cards=$deck)"
+    override fun toString(): String = "${this::class.simpleName}(size=$size, cards=$deckOfCards)"
 }
