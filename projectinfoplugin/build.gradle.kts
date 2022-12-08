@@ -13,10 +13,6 @@ val versionInfo = "1.0.9"
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
-}
-
 java {
     withSourcesJar()
     withJavadocJar()
