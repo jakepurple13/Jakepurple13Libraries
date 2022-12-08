@@ -5,6 +5,7 @@ import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.TextStyle
 import com.jakewharton.picnic.table
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileTree
@@ -18,6 +19,13 @@ import kotlin.streams.toList
 
 abstract class ProjectInfoExtension @Inject constructor(private val filterable: ConfigurableFileTree) {
     var sortWith: Comparator<Pair<String, List<FileInfo>>> = compareByDescending { p -> p.second.maxOf { it.size } }
+
+    var groupByFileType = true
+    var showTopCount = 1
+        set(value) {
+            if (value <= 0 && groupByFileType) throw GradleException("showTopCount must be greater than 0")
+            field = value
+        }
 
     internal val fileDataValidation = FileDataValidation()
     fun fileLineCountValidation(block: FileDataValidation.() -> Unit) {
@@ -60,6 +68,14 @@ abstract class ProjectInfoTask : DefaultTask() {
 
     @get:Optional
     @get:Input
+    abstract val groupByFileType: Property<Boolean>
+
+    @get:Optional
+    @get:Input
+    abstract val showTopCount: Property<Int>
+
+    @get:Optional
+    @get:Input
     abstract val excludeFileTypes: ListProperty<String>
 
     @get:Optional
@@ -82,7 +98,12 @@ data class FileDataValidation(
     }
 }
 
-data class FileInfo(val size: Int, val absolutePath: String, val name: String)
+data class FileInfo(
+    val size: Int,
+    val absolutePath: String,
+    val name: String,
+    val extension: String
+)
 
 class ProjectInfoPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -108,13 +129,17 @@ class ProjectInfoPlugin : Plugin<Project> {
                 target.sortWith.set(extension.sortWith)
                 target.filter.set(extension.filtering)
                 target.fileDataValidation.set(extension.fileDataValidation)
+                target.groupByFileType.set(extension.groupByFileType)
+                target.showTopCount.set(extension.showTopCount)
             }
             val taskInfo = task.get()
             librariesInfo(
                 fileList = taskInfo.filter.get(),
                 sortWith = taskInfo.sortWith.get(),
                 excludeFileTypes = taskInfo.excludeFileTypes.get(),
-                fileDataValidation = taskInfo.fileDataValidation.get()
+                fileDataValidation = taskInfo.fileDataValidation.get(),
+                groupByFileType = taskInfo.groupByFileType.get(),
+                showTopCount = taskInfo.showTopCount.get()
             )
         }
     }
@@ -123,44 +148,71 @@ class ProjectInfoPlugin : Plugin<Project> {
         fileList: ConfigurableFileTree,
         sortWith: Comparator<Pair<String, List<FileInfo>>>,
         excludeFileTypes: List<String>,
-        fileDataValidation: FileDataValidation
+        fileDataValidation: FileDataValidation,
+        groupByFileType: Boolean,
+        showTopCount: Int
     ) {
-        /*val files = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
-        else getAllFilesNotGit(projectDir)*/
         val allFiles = fileList.files.toList()
             .filter { file -> file.extension !in excludeFileTypes && file.extension.isNotEmpty() }
-            .groupBy(File::extension) { FileInfo(it.readLines().size, it.absolutePath, it.name) }
-            .toList()
-            .sortedWith(sortWith)
-            .toMap()
+            .groupBy(File::extension) {
+                FileInfo(
+                    size = it.readLines().size,
+                    absolutePath = it.absolutePath,
+                    name = it.name,
+                    extension = it.extension
+                )
+            }
+
         table {
             cellStyle {
                 border = true
                 paddingLeft = 1
                 paddingRight = 1
             }
-
             header {
-                row("File Type", "File Count", "Total Lines", "Most Lines", "File Name", "File Location")
-            }
-
-            allFiles.forEach { (t, u) ->
-                row {
-                    cell(t)
-                    val largest = u.maxByOrNull { it.size }
-                    cell(u.size)
-                    cell(u.sumOf { it.size })
-                    cell(fileDataValidation.largestText(t, largest?.size ?: 0))
-                    cell(largest?.name)
-                    cell(largest?.absolutePath)
+                if (groupByFileType) {
+                    row("File Type", "File Count", "Total Lines", "Most Lines", "File Name", "File Location")
+                } else {
+                    row("File Type", "File Name", "Line Count", "File Location")
                 }
             }
 
-            row {
-                cell("Total")
-                cell(allFiles.values.sumOf { it.size })
-                cell(allFiles.values.sumOf { it.sumOf { it.size } })
-                cell(allFiles.values.sumOf { it.maxOf { it.size } })
+            if (groupByFileType) {
+                allFiles
+                    .toList()
+                    .sortedWith(sortWith)
+                    .toMap()
+                    .forEach { (t, u) ->
+                        row {
+                            cell(t)
+                            val firstFive = u.sortedByDescending { it.size }.take(showTopCount)
+                            cell(u.size)
+                            cell(u.sumOf { it.size })
+                            cell(firstFive.joinToString("\n") { fileDataValidation.largestText(t, it.size) })
+                            cell(firstFive.joinToString("\n") { it.name })
+                            cell(firstFive.joinToString("\n") { it.absolutePath })
+                        }
+                    }
+            } else {
+                allFiles.values.flatten()
+                    .sortedByDescending { it.size }
+                    .forEach { file: FileInfo ->
+                        row {
+                            cell(file.extension)
+                            cell(file.name)
+                            cell(fileDataValidation.largestText(file.extension, file.size))
+                            cell(file.absolutePath)
+                        }
+                    }
+            }
+
+            footer {
+                row {
+                    cell("Total")
+                    cell(allFiles.values.sumOf { it.size })
+                    cell(allFiles.values.sumOf { it.sumOf { it.size } })
+                    cell(allFiles.values.sumOf { it.maxOf { it.size } })
+                }
             }
         }
             .also(::println)

@@ -196,6 +196,11 @@ projectInfo {
         //In instances where you don't want this validation to run, you can set this variable to false
         runValidation = true
     }
+    //If you want to list all files:
+    groupByFileType = false
+    //If you do group by file type and you want to see the top x amount of files
+    // Note, this MUST be above 0:
+    showTopCount = 3
 }
 ```
 

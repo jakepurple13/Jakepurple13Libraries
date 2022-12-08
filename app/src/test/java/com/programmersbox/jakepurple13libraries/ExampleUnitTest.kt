@@ -35,6 +35,7 @@ class ExampleUnitTest {
                 row {
                     cell(t)
                     val largest = u.maxByOrNull { it.readLines().size }
+                    val firstFive = u.take(5)
                     cell(u.size)
                     cell(u.sumOf { it.readLines().size })
                     cell(largest?.readLines()?.size)
@@ -44,11 +45,13 @@ class ExampleUnitTest {
                 }
             }
 
-            row {
-                cell("Total")
-                cell(allFiles.values.sumOf { it.size })
-                cell(allFiles.values.sumOf { it.sumOf { it.readLines().size } })
-                cell(allFiles.values.sumOf { it.maxOf { it.readLines().size } })
+            footer {
+                row {
+                    cell("Total")
+                    cell(allFiles.values.sumOf { it.size })
+                    cell(allFiles.values.sumOf { it.sumOf { it.readLines().size } })
+                    cell(allFiles.values.sumOf { it.maxOf { it.readLines().size } })
+                }
             }
         }
             .also(::println)
