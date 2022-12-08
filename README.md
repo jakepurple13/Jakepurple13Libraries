@@ -173,6 +173,20 @@ projectInfo {
     filter {
         //Then use normal excludes/includes here!
     }
+    //To include some File Line Count Validation:
+    fileLineCountValidation {
+        //You can choose a custom color!
+        //The color makes use of https://github.com/ajalt/mordant
+        customColor(0f, 0.5f, 1f)
+        color = TextColors.red
+        //Add file types to check. So kt, kts, java, etc
+        fileTypesToCheck.add("kt", "kts")
+        //And finally, add a line count to flag the colors on.
+        //This sample will flag kt and kts files that are above 100 lines of code
+        lineCountToFlag = 100
+        //In instances where you don't want this validation to run, you can set this variable to false
+        runValidation = true
+    }
 }
 ```
 
