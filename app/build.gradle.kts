@@ -24,7 +24,7 @@ dependencies {
     //val purpleLibVersion = "1a941628f0" //This is the first release with the concentrated gradle stuff
     when (LibLocation.Project) {
         LibLocation.Individual -> {
-            val purpleLibVersion = "1.0.8"
+            val purpleLibVersion = "1.1.0"
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton:$purpleLibVersion")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:diamondloader:$purpleLibVersion")
@@ -34,7 +34,7 @@ dependencies {
             implementation("com.github.jakepurple13.Jakepurple13Libraries:randomutils:$purpleLibVersion")
         }
         LibLocation.Bom -> {
-            val purpleLibVersion = "1.0.8"
+            val purpleLibVersion = "1.1.0"
             implementation(platform("com.github.jakepurple13.Jakepurple13Libraries:libraries-bom:$purpleLibVersion"))
             implementation("com.github.jakepurple13.Jakepurple13Libraries:patterninput")
             implementation("com.github.jakepurple13.Jakepurple13Libraries:groupbutton")
