@@ -3,7 +3,7 @@ plugins {
     id("com.android.application") version libs.versions.androidGradle.get() apply false
     id("com.android.library") version libs.versions.androidGradle.get() apply false
     kotlin("android") version libs.versions.kotlin.get() apply false
-    id("io.github.jakepurple13.ProjectInfo") version "1.0.8"
+    id("io.github.jakepurple13.ProjectInfo")
 }
 
 projectInfo {
@@ -12,6 +12,12 @@ projectInfo {
     }
 
     sortWith = compareByDescending { it.second.maxOf { it.size } }
+
+    fileLineCountValidation {
+        customColor(0f, 0.5f, 1f)
+        fileTypesToCheck.add("kt", "kts")
+        lineCountToFlag = 100
+    }
 }
 
 buildscript {

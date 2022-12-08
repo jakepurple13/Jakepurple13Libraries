@@ -1,5 +1,8 @@
 package com.programmersbox
 
+import com.github.ajalt.mordant.rendering.AnsiLevel
+import com.github.ajalt.mordant.rendering.TextColors
+import com.github.ajalt.mordant.rendering.TextStyle
 import com.jakewharton.picnic.table
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
@@ -9,15 +12,19 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
-import java.nio.file.Files
 import javax.inject.Inject
 import kotlin.streams.toList
 
 abstract class ProjectInfoExtension @Inject constructor(private val filterable: ConfigurableFileTree) {
     var sortWith: Comparator<Pair<String, List<FileInfo>>> = compareByDescending { p -> p.second.maxOf { it.size } }
+
+    internal val fileDataValidation = FileDataValidation()
+    fun fileLineCountValidation(block: FileDataValidation.() -> Unit) {
+        fileDataValidation.runValidation = true
+        fileDataValidation.apply(block)
+    }
+
     val excludeFileTypes = mutableListOf<String>()
     internal val filtering: ConfigurableFileTree = filterable
     fun filter(block: ConfigurableFileTree.() -> Unit) {
@@ -49,11 +56,30 @@ abstract class ProjectInfoTask : DefaultTask() {
 
     @get:Optional
     @get:Input
+    abstract val fileDataValidation: Property<FileDataValidation>
+
+    @get:Optional
+    @get:Input
     abstract val excludeFileTypes: ListProperty<String>
 
     @get:Optional
     @get:Input
     abstract val filter: Property<ConfigurableFileTree>
+}
+
+data class FileDataValidation(
+    var color: TextStyle = TextColors.blue,
+    var lineCountToFlag: Int = 0,
+    val fileTypesToCheck: MutableList<String> = mutableListOf(),
+    var runValidation: Boolean = false
+) {
+    fun MutableList<String>.add(vararg fileTypes: String) = addAll(fileTypes)
+    fun red() = run { color = TextColors.red }
+    fun blue() = run { color = TextColors.blue }
+    fun green() = run { color = TextColors.green }
+    fun customColor(r: Float, g: Float, b: Float, level: AnsiLevel = AnsiLevel.TRUECOLOR) {
+        color = TextColors.rgb(r, g, b, level)
+    }
 }
 
 data class FileInfo(val size: Int, val absolutePath: String, val name: String)
@@ -81,12 +107,14 @@ class ProjectInfoPlugin : Plugin<Project> {
                 target.excludeFileTypes.set(extension.excludeFileTypes)
                 target.sortWith.set(extension.sortWith)
                 target.filter.set(extension.filtering)
+                target.fileDataValidation.set(extension.fileDataValidation)
             }
             val taskInfo = task.get()
             librariesInfo(
                 fileList = taskInfo.filter.get(),
                 sortWith = taskInfo.sortWith.get(),
                 excludeFileTypes = taskInfo.excludeFileTypes.get(),
+                fileDataValidation = taskInfo.fileDataValidation.get()
             )
         }
     }
@@ -95,6 +123,7 @@ class ProjectInfoPlugin : Plugin<Project> {
         fileList: ConfigurableFileTree,
         sortWith: Comparator<Pair<String, List<FileInfo>>>,
         excludeFileTypes: List<String>,
+        fileDataValidation: FileDataValidation
     ) {
         /*val files = if (useGit) getAllFiles(projectDir).map { File("$projectDir/$it") }
         else getAllFilesNotGit(projectDir)*/
@@ -121,7 +150,7 @@ class ProjectInfoPlugin : Plugin<Project> {
                     val largest = u.maxByOrNull { it.size }
                     cell(u.size)
                     cell(u.sumOf { it.size })
-                    cell(largest?.size)
+                    cell(fileDataValidation.largestText(t, largest?.size ?: 0))
                     cell(largest?.name)
                     cell(largest?.absolutePath)
                 }
@@ -137,17 +166,14 @@ class ProjectInfoPlugin : Plugin<Project> {
             .also(::println)
     }
 
-    private fun getAllFiles(projectDir: String): List<String> {
-        val command = "git -C $projectDir ls-files"
-        val process = Runtime.getRuntime().exec(command)
-        process.waitFor()
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        return reader.lines().toList()
-    }
-
-    private fun getAllFilesNotGit(projectDir: String): List<File> {
-        return Files.find(File(projectDir).toPath(), 999, { _, i -> i.isRegularFile })
-            .map { it.toAbsolutePath().toFile() }
-            .toList()
+    fun FileDataValidation.largestText(fileType: String, largestSize: Int): String {
+        return if (runValidation) {
+            if (
+                (fileType in fileTypesToCheck || fileTypesToCheck.isEmpty()) &&
+                largestSize >= lineCountToFlag
+            ) {
+                color(largestSize.toString())
+            } else largestSize.toString()
+        } else largestSize.toString()
     }
 }

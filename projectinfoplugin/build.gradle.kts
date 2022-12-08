@@ -8,7 +8,7 @@ sourceSets.configureEach {
     java.srcDirs("src/$name/kotlin")
 }
 
-val versionInfo = "1.0.8"
+val versionInfo = "1.0.9"
 
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
@@ -22,6 +22,7 @@ java {
 
 dependencies {
     implementation("com.jakewharton.picnic:picnic:0.6.0")
+    api("com.github.ajalt.mordant:mordant:2.0.0-beta9")
     implementation(gradleApi())
     implementation(kotlin("stdlib"))
 }
