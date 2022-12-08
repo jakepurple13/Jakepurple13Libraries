@@ -165,7 +165,7 @@ plugin {
     <summary>Classpath</summary>
 
 ```kotlin
-classpath("io.github.jakepurple13.ProjectInfo:projectinfoplugin:1.0.9")
+classpath("io.github.jakepurple13.ProjectInfo:projectinfoplugin:[version]")
 ```
 
 </details>
