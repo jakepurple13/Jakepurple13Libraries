@@ -14,7 +14,7 @@ projectInfo {
     sortWith = compareByDescending { it.second.maxOf { it.size } }
 
     fileLineCountValidation {
-        customColor(0f, 0.5f, 1f)
+        red()
         fileTypesToCheck.add("kt", "kts")
         lineCountToFlag = 100
     }
