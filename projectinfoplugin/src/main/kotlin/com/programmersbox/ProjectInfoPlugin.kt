@@ -33,7 +33,7 @@ abstract class ProjectInfoExtension @Inject constructor(private val filterable: 
     }
 
     fun sortByTotalLines() {
-        sortWith = compareByDescending { it.second.sumOf { it.size } }
+        sortWith = compareByDescending { p -> p.second.sumOf { it.size } }
     }
 
     fun sortByFileCount() {
