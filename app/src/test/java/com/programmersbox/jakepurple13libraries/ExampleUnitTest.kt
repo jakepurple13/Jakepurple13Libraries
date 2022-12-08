@@ -35,7 +35,6 @@ class ExampleUnitTest {
                 row {
                     cell(t)
                     val largest = u.maxByOrNull { it.readLines().size }
-                    val firstFive = u.take(5)
                     cell(u.size)
                     cell(u.sumOf { it.readLines().size })
                     cell(largest?.readLines()?.size)
