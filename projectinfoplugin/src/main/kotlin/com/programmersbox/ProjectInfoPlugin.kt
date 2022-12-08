@@ -166,7 +166,7 @@ class ProjectInfoPlugin : Plugin<Project> {
             .also(::println)
     }
 
-    fun FileDataValidation.largestText(fileType: String, largestSize: Int): String {
+    private fun FileDataValidation.largestText(fileType: String, largestSize: Int): String {
         return if (runValidation) {
             if (
                 (fileType in fileTypesToCheck || fileTypesToCheck.isEmpty()) &&
