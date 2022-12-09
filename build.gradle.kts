@@ -1,3 +1,5 @@
+import com.programmersbox.FileInfo
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version libs.versions.androidGradle.get() apply false
@@ -7,11 +9,18 @@ plugins {
 }
 
 projectInfo {
+    showTopCount = 3
+    groupByFileType = true
+
     filter {
-        exclude("**/*.png", "**/*.webp", "**renovate.json")
+        exclude("**renovate.json")
+        excludeFileTypes("png", "webp")
     }
 
-    sortWith = compareByDescending { it.second.maxOf { it.size } }
+    sort {
+        sortGroupedFiles = compareByDescending { p -> p.second.maxOf { it.size } }
+        sortUngroupedFiles = compareBy<FileInfo> { it.extension }.thenByDescending { it.size }
+    }
 
     fileLineCountValidation {
         red()

@@ -174,8 +174,6 @@ Some modifiable things:
 
 ```kotlin
 projectInfo {
-    //Set a custom sortWith using Comparator!
-    sortWith = compareByDescending { it.second.maxOf { it.size } }
     //add file types you want to exclude
     excludeFileTypes
     //to filter further:
@@ -196,10 +194,16 @@ projectInfo {
         //In instances where you don't want this validation to run, you can set this variable to false
         runValidation = true
     }
+    //Set a custom sortWith using Comparator!
+    //This allows you to set a sort for both grouped and ungrouped files!
+    sort {
+        sortGroupedFiles = compareByDescending { p -> p.second.maxOf { it.size } }
+        sortUngroupedFiles = compareBy<FileInfo> { it.extension }.thenByDescending { it.size }
+    }
     //If you want to list all files:
     groupByFileType = false
     //If you do group by file type and you want to see the top x amount of files
-    // Note, this MUST be above 0:
+    //Note, this MUST be above 0:
     showTopCount = 3
 }
 ```

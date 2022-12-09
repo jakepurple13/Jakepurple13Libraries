@@ -9,16 +9,17 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileTree
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
-import java.io.File
 import javax.inject.Inject
-import kotlin.streams.toList
 
 abstract class ProjectInfoExtension @Inject constructor(private val filterable: ConfigurableFileTree) {
-    var sortWith: Comparator<Pair<String, List<FileInfo>>> = compareByDescending { p -> p.second.maxOf { it.size } }
+    internal val sortFiles = SortFiles()
+
+    fun sort(block: SortFiles.() -> Unit) {
+        sortFiles.apply(block)
+    }
 
     var groupByFileType = true
     var showTopCount = 1
@@ -33,26 +34,13 @@ abstract class ProjectInfoExtension @Inject constructor(private val filterable: 
         fileDataValidation.apply(block)
     }
 
-    val excludeFileTypes = mutableListOf<String>()
     internal val filtering: ConfigurableFileTree = filterable
     fun filter(block: ConfigurableFileTree.() -> Unit) {
         filterable.apply(block)
     }
 
-    fun sortByMostLines() {
-        sortWith = compareByDescending { p -> p.second.maxOf { it.size } }
-    }
-
-    fun sortByFileType() {
-        sortWith = compareBy { it.first }
-    }
-
-    fun sortByTotalLines() {
-        sortWith = compareByDescending { p -> p.second.sumOf { it.size } }
-    }
-
-    fun sortByFileCount() {
-        sortWith = compareByDescending { it.second.size }
+    fun excludeFileTypes(vararg extension: String) {
+        filterable.exclude(*extension.map { "**/*.$it" }.toTypedArray())
     }
 }
 
@@ -60,7 +48,7 @@ abstract class ProjectInfoTask : DefaultTask() {
 
     @get:Optional
     @get:Input
-    abstract val sortWith: Property<Comparator<Pair<String, List<FileInfo>>>>
+    abstract val sortTypes: Property<SortFiles>
 
     @get:Optional
     @get:Input
@@ -73,10 +61,6 @@ abstract class ProjectInfoTask : DefaultTask() {
     @get:Optional
     @get:Input
     abstract val showTopCount: Property<Int>
-
-    @get:Optional
-    @get:Input
-    abstract val excludeFileTypes: ListProperty<String>
 
     @get:Optional
     @get:Input
@@ -95,6 +79,34 @@ data class FileDataValidation(
     fun green() = run { color = TextColors.green }
     fun customColor(r: Float, g: Float, b: Float, level: AnsiLevel = AnsiLevel.TRUECOLOR) {
         color = TextColors.rgb(r, g, b, level)
+    }
+}
+
+@JvmInline
+value class Extension(val extension: String)
+
+data class SortFiles(
+    var sortGroupedFiles: Comparator<Pair<Extension, List<FileInfo>>> = compareByDescending { p -> p.second.maxOf { it.size } },
+    var sortUngroupedFiles: Comparator<FileInfo> = compareBy<FileInfo> { it.extension }.thenByDescending { it.size }
+) {
+    fun sortByMostLines() {
+        sortGroupedFiles = compareByDescending { p -> p.second.maxOf { it.size } }
+        sortUngroupedFiles = compareByDescending { p -> p.size }
+    }
+
+    fun sortByFileType() {
+        sortGroupedFiles = compareBy<Pair<Extension, List<FileInfo>>> { it.first.extension }
+            .thenByDescending { it.second.size }
+        sortUngroupedFiles = compareBy<FileInfo> { it.extension }
+            .thenByDescending { it.size }
+    }
+
+    fun sortByTotalLines() {
+        sortGroupedFiles = compareByDescending { p -> p.second.sumOf { it.size } }
+    }
+
+    fun sortByFileCount() {
+        sortGroupedFiles = compareByDescending { it.second.size }
     }
 }
 
@@ -125,36 +137,33 @@ class ProjectInfoPlugin : Plugin<Project> {
         val task = target.tasks.register("projectInfo", ProjectInfoTask::class.java)
         target.afterEvaluate {
             task.configure { target ->
-                target.excludeFileTypes.set(extension.excludeFileTypes)
-                target.sortWith.set(extension.sortWith)
                 target.filter.set(extension.filtering)
                 target.fileDataValidation.set(extension.fileDataValidation)
                 target.groupByFileType.set(extension.groupByFileType)
                 target.showTopCount.set(extension.showTopCount)
+                target.sortTypes.set(extension.sortFiles)
             }
             val taskInfo = task.get()
             librariesInfo(
                 fileList = taskInfo.filter.get(),
-                sortWith = taskInfo.sortWith.get(),
-                excludeFileTypes = taskInfo.excludeFileTypes.get(),
                 fileDataValidation = taskInfo.fileDataValidation.get(),
                 groupByFileType = taskInfo.groupByFileType.get(),
-                showTopCount = taskInfo.showTopCount.get()
+                showTopCount = taskInfo.showTopCount.get(),
+                sortFiles = taskInfo.sortTypes.get()
             )
         }
     }
 
     private fun librariesInfo(
         fileList: ConfigurableFileTree,
-        sortWith: Comparator<Pair<String, List<FileInfo>>>,
-        excludeFileTypes: List<String>,
         fileDataValidation: FileDataValidation,
         groupByFileType: Boolean,
-        showTopCount: Int
+        showTopCount: Int,
+        sortFiles: SortFiles
     ) {
         val allFiles = fileList.files.toList()
-            .filter { file -> file.extension !in excludeFileTypes && file.extension.isNotEmpty() }
-            .groupBy(File::extension) {
+            .filter { file -> file.extension.isNotEmpty() }
+            .groupBy({ Extension(it.extension) }) {
                 FileInfo(
                     size = it.readLines().size,
                     absolutePath = it.absolutePath,
@@ -180,22 +189,27 @@ class ProjectInfoPlugin : Plugin<Project> {
             if (groupByFileType) {
                 allFiles
                     .toList()
-                    .sortedWith(sortWith)
+                    .sortedWith(sortFiles.sortGroupedFiles)
                     .toMap()
                     .forEach { (t, u) ->
                         row {
-                            cell(t)
-                            val firstFive = u.sortedByDescending { it.size }.take(showTopCount)
+                            cell(t.extension)
+                            val firstAmount = u.sortedByDescending { it.size }.take(showTopCount)
                             cell(u.size)
                             cell(u.sumOf { it.size })
-                            cell(firstFive.joinToString("\n") { fileDataValidation.largestText(t, it.size) })
-                            cell(firstFive.joinToString("\n") { it.name })
-                            cell(firstFive.joinToString("\n") { it.absolutePath })
+                            cell(firstAmount.joinToString("\n") {
+                                fileDataValidation.largestText(
+                                    t.extension,
+                                    it.size
+                                )
+                            })
+                            cell(firstAmount.joinToString("\n") { it.name })
+                            cell(firstAmount.joinToString("\n") { it.absolutePath })
                         }
                     }
             } else {
                 allFiles.values.flatten()
-                    .sortedByDescending { it.size }
+                    .sortedWith(sortFiles.sortUngroupedFiles)
                     .forEach { file: FileInfo ->
                         row {
                             cell(file.extension)
