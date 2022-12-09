@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm")
     alias(libs.plugins.publish)
     id("maven-publish")
-    java
 }
 
 sourceSets.configureEach {
@@ -13,17 +12,6 @@ val versionInfo = getVersionFromAppInfo() ?: "1.0.9".also { println("Could not f
 
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-}
-
-tasks.withType<JavaCompile>().let {
-    it["compileJava"].options.encoding = "UTF-8"
-    it["compileTestJava"].options.encoding = "UTF-8"
-}
 
 java {
     withSourcesJar()
