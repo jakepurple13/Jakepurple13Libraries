@@ -6,12 +6,6 @@ plugins {
     id("com.android.library") version libs.versions.androidGradle.get() apply false
     kotlin("android") version libs.versions.kotlin.get() apply false
     id("io.github.jakepurple13.ProjectInfo")
-    java
-}
-
-tasks.withType<JavaCompile>().let {
-    it["compileJava"].options.encoding = "UTF-8"
-    it["compileTestJava"].options.encoding = "UTF-8"
 }
 
 projectInfo {
