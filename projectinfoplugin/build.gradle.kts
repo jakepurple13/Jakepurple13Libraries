@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     alias(libs.plugins.publish)
     id("maven-publish")
+    java
 }
 
 sourceSets.configureEach {
@@ -19,8 +20,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     }
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
+tasks.withType<JavaCompile>().let {
+    it["compileJava"].options.encoding = "UTF-8"
+    it["compileTestJava"].options.encoding = "UTF-8"
 }
 
 java {
