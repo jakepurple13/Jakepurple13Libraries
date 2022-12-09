@@ -13,6 +13,16 @@ val versionInfo = getVersionFromAppInfo() ?: "1.0.9".also { println("Could not f
 group = "io.github.jakepurple13.ProjectInfo"
 version = versionInfo
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
+}
+
 java {
     withSourcesJar()
     withJavadocJar()
