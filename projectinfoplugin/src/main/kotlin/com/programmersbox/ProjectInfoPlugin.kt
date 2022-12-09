@@ -68,7 +68,7 @@ abstract class ProjectInfoTask : DefaultTask() {
 }
 
 data class FileDataValidation(
-    var color: TextStyle = TextColors.blue,
+    var color: TextStyle = TextColors.red,
     var lineCountToFlag: Int = 0,
     val fileTypesToCheck: MutableList<String> = mutableListOf(),
     var runValidation: Boolean = false
@@ -97,6 +97,7 @@ data class SortFiles(
     fun sortByFileType() {
         sortGroupedFiles = compareBy<Pair<Extension, List<FileInfo>>> { it.first.extension }
             .thenByDescending { it.second.size }
+            .thenByDescending { p -> p.second.maxOf { it.size } }
         sortUngroupedFiles = compareBy<FileInfo> { it.extension }
             .thenByDescending { it.size }
     }
