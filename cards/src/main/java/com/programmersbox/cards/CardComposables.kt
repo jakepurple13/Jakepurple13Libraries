@@ -68,6 +68,46 @@ fun PlayingCard(
     }
 }
 
+@Composable
+fun PlayingCard(
+    card: Card,
+    modifier: Modifier = Modifier,
+    tonalElevation: Dp = 4.dp,
+    shape: Shape = RoundedCornerShape(7.dp),
+    color: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = contentColorFor(color),
+    shadowElevation: Dp = 0.dp,
+    border: BorderStroke? = null,
+) = Surface(
+    shape = shape,
+    tonalElevation = tonalElevation,
+    contentColor = contentColor,
+    shadowElevation = shadowElevation,
+    border = border,
+    modifier = modifier.size(100.dp, 150.dp),
+) {
+    Column(verticalArrangement = Arrangement.SpaceBetween) {
+        Text(
+            text = card.toSymbolString(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp),
+            textAlign = TextAlign.Start
+        )
+        FlowRow(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            lastLineMainAxisAlignment = FlowMainAxisAlignment.Center
+        ) { repeat(card.value) { Text(text = card.suit.unicodeSymbol, textAlign = TextAlign.Center) } }
+        Text(
+            text = card.toSymbolString(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp),
+            textAlign = TextAlign.End
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmptyCard(
@@ -93,14 +133,33 @@ fun EmptyCard(
     modifier = modifier.size(100.dp, 150.dp),
 ) {}
 
+@Composable
+fun EmptyCard(
+    modifier: Modifier = Modifier,
+    tonalElevation: Dp = 4.dp,
+    shape: Shape = RoundedCornerShape(7.dp),
+    color: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = contentColorFor(color),
+    shadowElevation: Dp = 0.dp,
+    border: BorderStroke? = null,
+) = Surface(
+    shape = shape,
+    tonalElevation = tonalElevation,
+    contentColor = contentColor,
+    shadowElevation = shadowElevation,
+    border = border,
+    modifier = modifier.size(100.dp, 150.dp),
+) {}
+
 @Preview
 @Composable
 fun CardPreview() {
     MaterialTheme {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            PlayingCard(card = Card.RandomCard)
+            PlayingCard(card = Card.RandomCard) {}
             PlayingCard(card = Card[13])
             EmptyCard()
+            EmptyCard {}
         }
     }
 }
