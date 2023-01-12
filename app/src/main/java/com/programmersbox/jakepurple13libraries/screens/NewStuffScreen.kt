@@ -11,8 +11,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.programmersbox.jakepurple13libraries.ScaffoldTop
+import com.programmersbox.jakepurple13libraries.ui.theme.Jakepurple13LibrariesTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -147,5 +149,29 @@ fun SearchBarScreen() {
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun DatePreview() {
+    Jakepurple13LibrariesTheme(true) {
+        DateScreen()
+    }
+}
+
+@Preview
+@Composable
+fun NewStuffPreview() {
+    Jakepurple13LibrariesTheme(true) {
+        NewScreen()
+    }
+}
+
+@Preview
+@Composable
+fun SearchPreview() {
+    Jakepurple13LibrariesTheme(true) {
+        SearchBarScreen()
     }
 }
