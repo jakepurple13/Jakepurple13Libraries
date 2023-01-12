@@ -86,7 +86,18 @@ fun DateScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBarScreen() {
-    ScaffoldTop(Screen.SearchBarScreen) { padding ->
+    var dockedOrNot by remember { mutableStateOf(false) }
+    ScaffoldTop(
+        Screen.SearchBarScreen,
+        topBarActions = {
+            Text("Docked/Not")
+            Spacer(Modifier.width(2.dp))
+            Switch(
+                checked = dockedOrNot,
+                onCheckedChange = { dockedOrNot = it }
+            )
+        }
+    ) { padding ->
         var text by rememberSaveable { mutableStateOf("") }
         var active by rememberSaveable { mutableStateOf(false) }
         val focusManager = LocalFocusManager.current
@@ -96,48 +107,76 @@ fun SearchBarScreen() {
             active = false
         }
 
+        val searchBarContent: @Composable ColumnScope.() -> Unit = {
+            Column(
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                repeat(4) { idx ->
+                    val resultText = "Suggestion $idx"
+                    @OptIn(ExperimentalMaterial3Api::class)
+                    ListItem(
+                        headlineText = { Text(resultText) },
+                        supportingText = { Text("Additional info") },
+                        leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
+                        modifier = Modifier.clickable {
+                            text = resultText
+                            closeSearchBar()
+                        }
+                    )
+                    if (idx != 3) {
+                        Divider()
+                    }
+                }
+            }
+        }
+
         Box(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
             // This is okay to put first because search bars by default have zIndex = 1f.
-            SearchBar(
-                modifier = Modifier.align(Alignment.TopCenter),
-                query = text,
-                onQueryChange = { text = it },
-                onSearch = { closeSearchBar() },
-                active = active,
-                onActiveChange = {
-                    active = it
-                    if (!active) focusManager.clearFocus()
-                },
-                placeholder = { Text("Hinted search text") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    repeat(4) { idx ->
-                        val resultText = "Suggestion $idx"
-                        @OptIn(ExperimentalMaterial3Api::class)
-                        ListItem(
-                            headlineText = { Text(resultText) },
-                            supportingText = { Text("Additional info") },
-                            leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                text = resultText
-                                closeSearchBar()
-                            }
-                        )
-                        if (idx != 3) {
-                            Divider()
-                        }
+            when (dockedOrNot) {
+                true -> {
+                    SearchBar(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        query = text,
+                        onQueryChange = { text = it },
+                        onSearch = { closeSearchBar() },
+                        active = active,
+                        onActiveChange = {
+                            active = it
+                            if (!active) focusManager.clearFocus()
+                        },
+                        placeholder = { Text("Hinted search text") },
+                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                        trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
+                    ) {
+                        searchBarContent()
+                    }
+                }
+
+                false -> {
+                    DockedSearchBar(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        query = text,
+                        onQueryChange = { text = it },
+                        onSearch = { closeSearchBar() },
+                        active = active,
+                        onActiveChange = {
+                            active = it
+                            if (!active) focusManager.clearFocus()
+                        },
+                        placeholder = { Text("Hinted search text") },
+                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                        trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
+                    ) {
+                        searchBarContent()
                     }
                 }
             }
+
 
             LazyColumn(
                 contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
