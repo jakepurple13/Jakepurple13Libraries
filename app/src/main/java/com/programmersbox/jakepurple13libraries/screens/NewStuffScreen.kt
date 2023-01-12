@@ -87,6 +87,42 @@ fun DateScreen() {
 @Composable
 fun SearchBarScreen() {
     var dockedOrNot by remember { mutableStateOf(false) }
+
+    var text by rememberSaveable { mutableStateOf("") }
+    var active by rememberSaveable { mutableStateOf(false) }
+    var active1 by rememberSaveable { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+
+    fun closeSearchBar() {
+        focusManager.clearFocus()
+        active = false
+        active1 = false
+    }
+
+    val searchBarContent: @Composable ColumnScope.() -> Unit = {
+        Column(
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(4) { idx ->
+                val resultText = "Suggestion $idx"
+                @OptIn(ExperimentalMaterial3Api::class)
+                ListItem(
+                    headlineText = { Text(resultText) },
+                    supportingText = { Text("Additional info") },
+                    leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
+                    modifier = Modifier.clickable {
+                        text = resultText
+                        closeSearchBar()
+                    }
+                )
+                if (idx != 3) {
+                    Divider()
+                }
+            }
+        }
+    }
+
     ScaffoldTop(
         Screen.SearchBarScreen,
         topBarActions = {
@@ -96,41 +132,26 @@ fun SearchBarScreen() {
                 checked = dockedOrNot,
                 onCheckedChange = { dockedOrNot = it }
             )
-        }
-    ) { padding ->
-        var text by rememberSaveable { mutableStateOf("") }
-        var active by rememberSaveable { mutableStateOf(false) }
-        val focusManager = LocalFocusManager.current
-
-        fun closeSearchBar() {
-            focusManager.clearFocus()
-            active = false
-        }
-
-        val searchBarContent: @Composable ColumnScope.() -> Unit = {
-            Column(
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+        },
+        bottomBar = {
+            DockedSearchBar(
+                modifier = Modifier.fillMaxWidth(),
+                query = text,
+                onQueryChange = { text = it },
+                onSearch = { closeSearchBar() },
+                active = active1,
+                onActiveChange = {
+                    active1 = it
+                    if (!active1) focusManager.clearFocus()
+                },
+                placeholder = { Text("Hinted search text") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
             ) {
-                repeat(4) { idx ->
-                    val resultText = "Suggestion $idx"
-                    @OptIn(ExperimentalMaterial3Api::class)
-                    ListItem(
-                        headlineText = { Text(resultText) },
-                        supportingText = { Text("Additional info") },
-                        leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
-                        modifier = Modifier.clickable {
-                            text = resultText
-                            closeSearchBar()
-                        }
-                    )
-                    if (idx != 3) {
-                        Divider()
-                    }
-                }
+                searchBarContent()
             }
         }
-
+    ) { padding ->
         Box(
             Modifier
                 .fillMaxSize()
@@ -176,7 +197,6 @@ fun SearchBarScreen() {
                     }
                 }
             }
-
 
             LazyColumn(
                 contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
