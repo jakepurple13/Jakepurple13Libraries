@@ -15,13 +15,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun rememberDeck(vararg key: Any) = remember(key) { Deck.defaultDeck() }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun PlayingCard(
     card: Card,
@@ -56,7 +54,7 @@ fun PlayingCard(
         )
         FlowRow(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            lastLineMainAxisAlignment = FlowMainAxisAlignment.Center
+            horizontalArrangement = Arrangement.Center
         ) { repeat(card.value) { Text(text = card.suit.unicodeSymbol, textAlign = TextAlign.Center) } }
         Text(
             text = card.toSymbolString(),
@@ -68,6 +66,7 @@ fun PlayingCard(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlayingCard(
     card: Card,
@@ -96,7 +95,7 @@ fun PlayingCard(
         )
         FlowRow(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            lastLineMainAxisAlignment = FlowMainAxisAlignment.Center
+            horizontalArrangement = Arrangement.Center
         ) { repeat(card.value) { Text(text = card.suit.unicodeSymbol, textAlign = TextAlign.Center) } }
         Text(
             text = card.toSymbolString(),
