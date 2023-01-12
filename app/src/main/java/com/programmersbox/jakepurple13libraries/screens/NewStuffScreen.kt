@@ -3,6 +3,7 @@ package com.programmersbox.jakepurple13libraries.screens
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -147,6 +148,7 @@ fun SearchBarScreen() {
                 placeholder = { Text("Hinted search text") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
+                shape = RoundedCornerShape(4.dp)
             ) {
                 searchBarContent()
             }
