@@ -15,7 +15,10 @@ enum class Screen(val content: @Composable (NavBackStackEntry) -> Unit) {
     Yahtzee({ YahtzeeScreen() }),
     PageCurl({ PageCurlScreen() }),
     FadingAction({ FadingActionScreen() }),
-    BannerBox({ BannerBoxScreen() })
+    BannerBox({ BannerBoxScreen() }),
+    NewScreen({ NewScreen() }),
+    DateScreen({ DateScreen() }),
+    SearchBarScreen({ SearchBarScreen() })
 }
 
 fun NavController.navigate(screen: Screen) = navigate(screen.name)
