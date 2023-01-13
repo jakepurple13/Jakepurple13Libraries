@@ -178,11 +178,18 @@ class Dice(value: Int = Random.nextInt(1..6), @Suppress("unused") val location: 
     }
 
     @Composable
-    operator fun invoke(
+    fun ShowDice(
         useDots: Boolean,
         modifier: Modifier = Modifier,
         onClick: () -> Unit = {}
     ) = if (useDots) DiceDots(this, modifier, onClick) else Dice(this, modifier, onClick)
+
+    @Composable
+    operator fun invoke(
+        useDots: Boolean,
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit = {}
+    ) = ShowDice(useDots, modifier, onClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -216,10 +223,7 @@ fun YahtzeeScreen(vm: YahtzeeViewModel = viewModel()) {
         screen = Screen.Yahtzee,
         topBarActions = {
             IconButton(onClick = { newGameDialog = true }) { Icon(Icons.Default.OpenInNew, null) }
-            IconToggleButton(
-                checked = vm.diceLook,
-                onCheckedChange = { vm.diceLook = it }
-            ) { Text(if (vm.diceLook) DOT_LOOK else "#") }
+            Dice(1, "").ShowDice(vm.diceLook, Modifier.size(40.dp)) { vm.diceLook = !vm.diceLook }
         },
         bottomBar = { BottomBarDiceRow(vm, vm.diceLook) },
     ) { p ->
