@@ -6,7 +6,7 @@ accompanist = "0.28.0"
 coil = "2.2.2"
 landscapist = "2.1.1"
 navVersion = "2.5.3"
-androidGradle = "7.3.1"
+androidGradle = "7.4.2"
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradle" }
