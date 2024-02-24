@@ -16,7 +16,7 @@ publish = { id = "com.gradle.plugin-publish", version = "1.1.0" }
 [libraries]
 androidGradle = { module = "com.android.tools.build:gradle", version.ref = "androidGradle" }
 kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:1.2.2"
+coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:1.2.3"
 
 kotlinStLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 androidCore = "androidx.core:core-ktx:1.9.0"
