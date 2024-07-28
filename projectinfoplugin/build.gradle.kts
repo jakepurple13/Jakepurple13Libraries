@@ -22,7 +22,7 @@ java {
 
 dependencies {
     implementation("com.jakewharton.picnic:picnic:0.6.0")
-    api("com.github.ajalt.mordant:mordant:2.0.0-beta9")
+    api("com.github.ajalt.mordant:mordant:2.7.2")
     implementation(gradleApi())
     implementation(kotlin("stdlib"))
 }
