@@ -2,7 +2,7 @@
 kotlin = "1.8.0"
 compose = "1.4.0-alpha04"
 compose-compiler = "1.4.0"
-accompanist = "0.28.0"
+accompanist = "0.36.0"
 coil = "2.2.2"
 landscapist = "2.1.1"
 navVersion = "2.5.3"
