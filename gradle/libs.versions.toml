@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.0"
+kotlin = "1.9.25"
 compose = "1.4.0-alpha04"
 compose-compiler = "1.4.0"
 accompanist = "0.28.0"
